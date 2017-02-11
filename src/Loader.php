@@ -58,30 +58,81 @@ class Loader
     protected $data;
 
     /**
-     * Template Path
-     *
-     * @since  1.0.0
-     * @access protected
-     *
-     * @var string The template path
-     */
-    protected $templatePath;
-
-    /**
      * Construct
      *
      * @since  1.0.0
      * @access public
      *
-     * @param string    $name         The name of the current template instance.
-     * @param \stdClass $data         The data object containing the data for the view template.
-     * @param string    $templatePath The path of the template to use.
+     * @param string    $name The name of the current template instance.
+     * @param \stdClass $data The data object containing the data for the view template.
      */
-    public function __construct($name, \stdClass $data, $templatePath)
+    public function __construct($name, \stdClass $data)
     {
-        $this->name         = $name;
-        $this->data         = $data;
-        $this->templatePath = $templatePath;
+        $this->name = $name;
+        $this->data = $data;
+    }
+
+    protected function getPluginFilePath($tmplPath)
+    {
+        $path = '';
+
+        if (is_array($tmplPath)) {
+            foreach ($tmplPath as $path) {
+                // Get the file path from the current template path item.
+                $path = $this->getPluginFilePath($path);
+
+                // We have the file?
+                if (file_exists($path)) {
+                    break;
+                }
+            }
+            $path = Filesystem::getPluginDirPath($tmplPath);
+        } elseif (is_string($tmplPath)) {
+            $path = Filesystem::getPluginDirPath($tmplPath);
+        }
+
+        return $path;
+    }
+
+    protected function sanitizeTemplatePath($tmplPath)
+    {
+        $tmp = null;
+
+        if (is_string($tmplPath)) {
+            // Sanitize template path and remove the path separator.
+            // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
+            $tmp = ltrim(preg_replace('[^a-zA-Z0-9\-\_]', '', $tmplPath), '/');
+        } elseif (is_array($tmplPath)) {
+            foreach ($tmplPath as $path) {
+                $tmp[] = $this->sanitizeTemplatePath($path);
+            }
+        }
+
+        return $tmp;
+    }
+
+    protected function getFilePath($tmplPath)
+    {
+        $tmplPath = $this->sanitizeTemplatePath($tmplPath);
+
+        // Retrieve the theme file path from child or parent.
+        $filePath = locate_template($tmplPath, false, false);
+
+        /**
+         * Use Plugin
+         *
+         * @since 1.0.0
+         *
+         * @param string 'yes' To search within the plugin directory. False otherwise.
+         */
+        $usePlugin = apply_filters('tmploader_use_plugin', 'yes');
+
+        // Looking for the file within the plugin if allowed.
+        if (! $filePath && 'yes' === $usePlugin) {
+            $filePath = $this->getPluginFilePath($tmplPath);
+        }
+
+        return $filePath;
     }
 
     /**
@@ -90,20 +141,18 @@ class Loader
      * @since  1.0.0
      * @access public
      *
-     * @throws \Exception In case the template path is incorrect or cannot be located.
+     * @throws \Exception                In case the template path is incorrect or cannot be located.
+     * @throws \InvalidArgumentException In case the filePath is empty or incorrect.
      *
      * @return string The template filename if one is located.
      */
-    public function render()
+    public function render($tmpPath)
     {
-        if (is_string($this->templatePath)) {
-            // Sanitize template path and remove the path separator.
-            // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
-            $this->templatePath = ltrim(preg_replace('[^a-zA-Z0-9\-\_]', '', $this->templatePath), '/');
-        }
+        // Retrieve the file path.
+        $filePath = $this->getFilePath($tmpPath);
 
-        if (! $this->templatePath) {
-            throw new \Exception(__('Template Loader, wrong path format'));
+        if (! $filePath) {
+            throw new \InvalidArgumentException(__('Template Loader, wrong path format.'));
         }
 
         /**
@@ -123,42 +172,26 @@ class Loader
          *
          * @param \stdClass $data The template data.
          */
-        $data = apply_filters("tmploader_template_engine_data_{$this->name}", $this->data);
+        $data = apply_filters("tmploader_template_engine_data_{$this->name}", $data);
 
-        // If data is empty, no other actions is needed.
+        // If data is empty, no other actions are needed.
         if (! $data) {
             return '';
         }
 
-        // Retrieve the theme file path from child or parent.
-        $viewPath = locate_template($this->templatePath, false, false);
-
-        if (! $viewPath) {
-            if (! is_array($this->templatePath)) {
-                $viewPath = Filesystem::getPluginDirPath($this->templatePath);
-            } else {
-                foreach ($this->templatePath as $path) {
-                    $viewPath = Filesystem::getPluginDirPath($path);
-                    if (file_exists($viewPath)) {
-                        break;
-                    }
-                }
-            }
-        }
-
         // Empty string or bool depend by the conditional above.
-        if (! file_exists($viewPath)) {
+        if (! file_exists($filePath)) {
             throw new \Exception(sprintf(
                 __('Template Loader: No way to locate the template %s.'),
-                $viewPath
+                $filePath
             ));
         }
 
         // Include the template.
         // Don't use include_once because some templates/views may need to be included multiple times.
         // @todo create a loaderInclude and pass $data. Avoid using $this within the file.
-        include $viewPath;
+        include $filePath;
 
-        return $viewPath;
+        return $filePath;
     }
 }
