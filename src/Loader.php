@@ -57,21 +57,6 @@ class Loader
      */
     protected $data;
 
-    /**
-     * Construct
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @param string    $name The name of the current template instance.
-     * @param \stdClass $data The data object containing the data for the view template.
-     */
-    public function __construct($name, \stdClass $data)
-    {
-        $this->name = $name;
-        $this->data = $data;
-    }
-
     protected function getPluginFilePath($tmplPath)
     {
         $path = '';
@@ -133,6 +118,26 @@ class Loader
         }
 
         return $filePath;
+    }
+
+    /**
+     * Construct
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @param string    $name The name of the current template instance.
+     * @param \stdClass $data The data object containing the data for the view template.
+     */
+    public function __construct($name, \stdClass $data = null)
+    {
+        $this->name = $name;
+        $this->data = $data;
+    }
+
+    public function setData(\stdClass $data)
+    {
+        $this->data = $data;
     }
 
     /**
