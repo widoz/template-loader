@@ -1,5 +1,9 @@
-Just Committed to initialize the repo.
+# WordPress Template Loader
 
-The code doesn't work right now. Give me some time.
+A simple hookable template loader for WordPress. Allow you to load templates in chain from child to plugin.
 
-If you want to help I really appreciate.
+This is not for the WordPress templates in the form of "name-slug.php" with fallback to name.php.
+Indeed this is a loader to build a basic data injection for views (templates).
+
+## Requirements
+Php >= 5.3.x
