@@ -31,6 +31,8 @@ defined('WPINC') || die;
 /**
  * Class Engine
  *
+ * @todo      Move to 7.1 Support only
+ *
  * @version   1.0.0
  * @package   TemplateLoader
  * @author    Guido Scialfa <dev@guidoscialfa.com>
@@ -38,14 +40,44 @@ defined('WPINC') || die;
 class Loader
 {
     /**
+     * Template Slug Sanitize Pattern
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @var string The pattern used to sanitize the template slug.
+     */
+    const TEMPLATE_SLUG_SANITIZE_PATTERN = '[^a-z0-9\-\_]';
+
+    /**
+     * Template Path Sanitize Pattern
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @var string The pattern used to sanitize the templates path.
+     */
+    const TEMPLATE_PATH_SANITIZE_PATTERN = '[^a-zA-Z0-9\-\_]';
+
+    /**
      * Name
      *
      * @since  1.0.0
      * @access protected
      *
-     * @var string The name of the current template instance.
+     * @var string The slug of the current template instance.
      */
-    protected $name;
+    protected $slug;
+
+    /**
+     * Templates Path
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @var array The list of the view files
+     */
+    protected $templatesPath;
 
     /**
      * Data
@@ -57,6 +89,68 @@ class Loader
      */
     protected $data;
 
+    /**
+     * Filesystem
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @var Filesystem The class instance
+     */
+    protected $filesystem;
+
+    /**
+     * Sanitize Template Slug
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @param string $slug The slug of the template.
+     *
+     * @return string The sanitize slug. May be empty.
+     */
+    protected function sanitizeTemplateSlug($slug)
+    {
+        return str_replace('-', '_', preg_replace(self::TEMPLATE_SLUG_SANITIZE_PATTERN, '', $slug));
+    }
+
+    /**
+     * Sanitize template file path
+     *
+     * @todo   Explode every path and sanitize every part?
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @param array $tmplPath The paths of the view files.
+     *
+     * @return array The sanitize templates path
+     */
+    protected function sanitizeTemplatePath(array $tmplPath)
+    {
+        $tmp = array();
+
+        foreach ($tmplPath as $path) {
+            // Sanitize template path and remove the path separator.
+            // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
+            $tmp[] = $this->filesystem->sanitizePath(
+                trim(preg_replace(self::TEMPLATE_PATH_SANITIZE_PATTERN, '', $path), '/')
+            );
+        }
+
+        return $tmp;
+    }
+
+    /**
+     * Retrieve the file path
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @param string|array $tmplPath The paths of the view files.
+     *
+     * @return string The first path found. Empty string if not found.
+     */
     protected function getPluginFilePath($tmplPath)
     {
         $path = '';
@@ -71,36 +165,29 @@ class Loader
                     break;
                 }
             }
-            $path = Filesystem::getPluginDirPath($tmplPath);
         } elseif (is_string($tmplPath)) {
-            $path = Filesystem::getPluginDirPath($tmplPath);
+            $path = $this->filesystem->getPluginDirPath($tmplPath);
         }
 
         return $path;
     }
 
-    protected function sanitizeTemplatePath($tmplPath)
+    /**
+     * Get the file path
+     *
+     * Retrieve the file path for the view
+     *
+     * @since  1.0.0
+     * @access protected
+     *
+     * @param array $tmplPath
+     *
+     * @return string The found file path. Empty string if not found.
+     */
+    protected function getFilePath(array $tmplPath)
     {
-        $tmp = null;
-
-        if (is_string($tmplPath)) {
-            // Sanitize template path and remove the path separator.
-            // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
-            $tmp = ltrim(preg_replace('[^a-zA-Z0-9\-\_]', '', $tmplPath), '/');
-        } elseif (is_array($tmplPath)) {
-            foreach ($tmplPath as $path) {
-                $tmp[] = $this->sanitizeTemplatePath($path);
-            }
-        }
-
-        return $tmp;
-    }
-
-    protected function getFilePath($tmplPath)
-    {
-        $tmplPath = $this->sanitizeTemplatePath($tmplPath);
-
-        // Retrieve the theme file path from child or parent.
+        // Try to retrieve the theme file path from child or parent for first.
+        // Fallback to Plugin templates path.
         $filePath = locate_template($tmplPath, false, false);
 
         /**
@@ -108,9 +195,10 @@ class Loader
          *
          * @since 1.0.0
          *
-         * @param string 'yes' To search within the plugin directory. False otherwise.
+         * @param        string    'yes' To search within the plugin directory. False otherwise.
+         * @param string $filePath The current view path.
          */
-        $usePlugin = apply_filters('tmploader_use_plugin', 'yes');
+        $usePlugin = apply_filters('tmploader_use_plugin', 'yes', $filePath);
 
         // Looking for the file within the plugin if allowed.
         if (! $filePath && 'yes' === $usePlugin) {
@@ -126,18 +214,50 @@ class Loader
      * @since  1.0.0
      * @access public
      *
-     * @param string    $name The name of the current template instance.
-     * @param \stdClass $data The data object containing the data for the view template.
+     * @param string     $slug       The slug of the current template instance.
+     * @param Filesystem $filesystem The filesystem class instance to use internally.
      */
-    public function __construct($name, \stdClass $data = null)
+    public function __construct($slug, Filesystem $filesystem)
     {
-        $this->name = $name;
-        $this->data = $data;
+        $this->slug          = $this->sanitizeTemplateSlug($slug);
+        $this->filesystem    = $filesystem;
+        $this->templatesPath = null;
+        $this->data          = null;
     }
 
+    /**
+     * Set Data
+     *
+     * Set the data for the view.
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @param \stdClass $data The data for the view.
+     *
+     * @return void
+     */
     public function setData(\stdClass $data)
     {
         $this->data = $data;
+    }
+
+    /**
+     * Set Templates Path
+     *
+     * Set the templates path. Where to search for a valid file for the template.
+     * This also sanitize the templates path.
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @param array|string $templatesPath The templates path.
+     */
+    public function setTemplatePath($templatesPath)
+    {
+        $templatesPath = (array)$templatesPath;
+        // Sanitize and retrieve the found template path.
+        $this->templatesPath = $this->sanitizeTemplatePath($templatesPath);
     }
 
     /**
@@ -151,10 +271,10 @@ class Loader
      *
      * @return string The template filename if one is located.
      */
-    public function render($tmpPath)
+    public function render()
     {
-        // Retrieve the file path.
-        $filePath = $this->getFilePath($tmpPath);
+        // Try to retrieve the file path for the template.
+        $filePath = $this->getFilePath($this->templatesPath);
 
         if (! $filePath) {
             throw new \InvalidArgumentException(__('Template Loader, wrong path format.'));
@@ -166,9 +286,9 @@ class Loader
          * @since 1.0.0
          *
          * @param \stdClass $data The template data.
-         * @param string    $name The name of the current template instance.
+         * @param string    $slug The slug of the current template instance.
          */
-        $data = apply_filters('tmploader_template_engine_data', $this->data, $this->name);
+        $data = apply_filters('tmploader_template_engine_data', $this->data, $this->slug);
 
         /**
          * Filter Specific Data
@@ -177,7 +297,7 @@ class Loader
          *
          * @param \stdClass $data The template data.
          */
-        $data = apply_filters("tmploader_template_engine_data_{$this->name}", $data);
+        $data = apply_filters("tmploader_template_engine_data_{$this->slug}", $data);
 
         // If data is empty, no other actions are needed.
         if (! $data) {
@@ -187,6 +307,7 @@ class Loader
         // Empty string or bool depend by the conditional above.
         if (! file_exists($filePath)) {
             throw new \Exception(sprintf(
+            // Translators: %s The path where the file not found should be located.
                 __('Template Loader: No way to locate the template %s.'),
                 $filePath
             ));
