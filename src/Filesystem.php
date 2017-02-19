@@ -32,7 +32,7 @@ namespace TemplateLoader;
  * @version 1.0.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
-final class Filesystem
+class Filesystem
 {
     /**
      * Sanitize path
@@ -44,7 +44,7 @@ final class Filesystem
      *
      * @return string The sanitized path.
      */
-    public static function sanitizePath($path)
+    public function sanitizePath($path)
     {
         while (false !== strpos($path, '..')) {
             $path = str_replace('..', '', $path);
@@ -63,12 +63,12 @@ final class Filesystem
      *
      * @return string The plugin dir path
      */
-    public static function getPluginDirPath($path = '/')
+    public function getPluginDirPath($path = '/')
     {
         $path = untrailingslashit(plugin_dir_path(__DIR__)) . '/' . trim($path, '/');
         $path = realpath($path);
 
-        return self::sanitizePath($path);
+        return $path;
     }
 
     /**
@@ -81,10 +81,10 @@ final class Filesystem
      *
      * @return string The plugin dir url
      */
-    public static function getPluginDirUrl($path = '/')
+    public function getPluginDirUrl($path = '/')
     {
         $path = untrailingslashit(plugin_dir_url(__DIR__)) . '/' . trim($path, '/');
 
-        return self::sanitizePath($path);
+        return $path;
     }
 }
