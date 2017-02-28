@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <ruleset name="WordPress PSR and PHPCompatibility">
     <description>Best practices beyond core WordPress Coding Standards and PSR</description>
 

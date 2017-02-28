@@ -26,8 +26,6 @@ namespace TemplateLoader;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-defined('WPINC') || die;
-
 /**
  * Class Engine
  *
@@ -306,16 +304,19 @@ class Loader
 
         // Empty string or bool depend by the conditional above.
         if (! file_exists($filePath)) {
-            throw new \Exception(sprintf(
-            // Translators: %s The path where the file not found should be located.
-                __('Template Loader: No way to locate the template %s.'),
-                $filePath
-            ));
+            throw new \Exception(
+                sprintf(
+                // Translators: %s The path where the file not found should be located.
+                    __('Template Loader: No way to locate the template %s.'),
+                    $filePath
+                )
+            );
         }
 
         // Include the template.
         // Don't use include_once because some templates/views may need to be included multiple times.
         // @todo create a loaderInclude and pass $data. Avoid using $this within the file.
+        /* @noinspection PhpIncludeInspection */
         include $filePath;
 
         return $filePath;
