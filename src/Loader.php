@@ -120,15 +120,15 @@ class Loader
      * @since  1.0.0
      * @access protected
      *
-     * @param array $tmplPath The paths of the view files.
+     * @param array|string $tmplPath The paths for the view.
      *
      * @return array The sanitize templates path
      */
-    protected function sanitizeTemplatePath(array $tmplPath)
+    protected function sanitizeTemplatePath($tmplPath)
     {
         $tmp = array();
 
-        foreach ($tmplPath as $path) {
+        foreach ((array)$tmplPath as $path) {
             // Sanitize template path and remove the path separator.
             // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
             $tmp[] = $this->filesystem->sanitizePath(
@@ -171,18 +171,67 @@ class Loader
     }
 
     /**
+     * Construct
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @param string       $slug         The slug of the current template instance.
+     * @param Filesystem   $filesystem   The filesystem class instance to use internally.
+     * @param string|array $templatePath The template paths where looking for the template file. Optional.
+     */
+    public function __construct($slug, Filesystem $filesystem, $templatePath = null)
+    {
+        $this->slug       = $this->sanitizeTemplateSlug($slug);
+        $this->filesystem = $filesystem;
+        $this->data       = null;
+
+        $this->setTemplatePath($templatePath);
+    }
+
+    /**
+     * Set Data
+     *
+     * Set the data for the view.
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @param \stdClass $data The data for the view.
+     *
+     * @return void
+     */
+    public function setData(\stdClass $data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * Get Templates Path
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @return array The templates path list
+     */
+    public function getTemplatePath()
+    {
+        return $this->templatesPath;
+    }
+
+    /**
      * Get the file path
      *
      * Retrieve the file path for the view
      *
      * @since  1.0.0
-     * @access protected
+     * @access public
      *
-     * @param array $tmplPath
+     * @param array|string $tmplPath The templates path.
      *
      * @return string The found file path. Empty string if not found.
      */
-    protected function getFilePath(array $tmplPath)
+    public function getFilePath($tmplPath)
     {
         // Try to retrieve the theme file path from child or parent for first.
         // Fallback to Plugin templates path.
@@ -204,40 +253,6 @@ class Loader
         }
 
         return $filePath;
-    }
-
-    /**
-     * Construct
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @param string     $slug       The slug of the current template instance.
-     * @param Filesystem $filesystem The filesystem class instance to use internally.
-     */
-    public function __construct($slug, Filesystem $filesystem)
-    {
-        $this->slug          = $this->sanitizeTemplateSlug($slug);
-        $this->filesystem    = $filesystem;
-        $this->templatesPath = null;
-        $this->data          = null;
-    }
-
-    /**
-     * Set Data
-     *
-     * Set the data for the view.
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @param \stdClass $data The data for the view.
-     *
-     * @return void
-     */
-    public function setData(\stdClass $data)
-    {
-        $this->data = $data;
     }
 
     /**
@@ -264,8 +279,7 @@ class Loader
      * @since  1.0.0
      * @access public
      *
-     * @throws \Exception                In case the template path is incorrect or cannot be located.
-     * @throws \InvalidArgumentException In case the filePath is empty or incorrect.
+     * @throws \Exception In case the template path is incorrect or cannot be located.
      *
      * @return string The template filename if one is located.
      */
@@ -274,8 +288,15 @@ class Loader
         // Try to retrieve the file path for the template.
         $filePath = $this->getFilePath($this->templatesPath);
 
-        if (! $filePath) {
-            throw new \InvalidArgumentException(__('Template Loader, wrong path format.'));
+        // Empty string or bool depend by the conditional above.
+        if (! file_exists($filePath)) {
+            throw new \Exception(
+                sprintf(
+                // Translators: %s The path of the template file within the server.
+                    __('Template Loader: No way to locate the template %s.'),
+                    $filePath
+                )
+            );
         }
 
         /**
@@ -300,17 +321,6 @@ class Loader
         // If data is empty, no other actions are needed.
         if (! $data) {
             return '';
-        }
-
-        // Empty string or bool depend by the conditional above.
-        if (! file_exists($filePath)) {
-            throw new \Exception(
-                sprintf(
-                // Translators: %s The path where the file not found should be located.
-                    __('Template Loader: No way to locate the template %s.'),
-                    $filePath
-                )
-            );
         }
 
         // Include the template.
