@@ -50,6 +50,8 @@ class Filesystem
             $path = str_replace('..', '', $path);
         }
 
+        $path = ('/' !== $path) ? $path : '';
+
         return $path;
     }
 
