@@ -14,5 +14,7 @@
       "TemplateLoader\\": "src/"
     }
   },
-  "require": {}
+  "require-dev": {
+    "10up/wp_mock": "dev-master"
+  }
 }
