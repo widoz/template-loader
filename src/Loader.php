@@ -29,11 +29,9 @@ namespace TemplateLoader;
 /**
  * Class Engine
  *
- * @todo      Move to 7.1 Support only
- *
- * @version   1.0.0
- * @package   TemplateLoader
- * @author    Guido Scialfa <dev@guidoscialfa.com>
+ * @version 1.0.0
+ * @package TemplateLoader
+ * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
 class Loader
 {
@@ -45,7 +43,7 @@ class Loader
      *
      * @var string The pattern used to sanitize the template slug.
      */
-    const TEMPLATE_SLUG_SANITIZE_PATTERN = '[^a-z0-9\-\_]';
+    const TEMPLATE_SLUG_SANITIZE_PATTERN = '/[^a-z0-9\-\_]*/';
 
     /**
      * Template Path Sanitize Pattern
@@ -55,7 +53,7 @@ class Loader
      *
      * @var string The pattern used to sanitize the templates path.
      */
-    const TEMPLATE_PATH_SANITIZE_PATTERN = '[^a-zA-Z0-9\-\_]';
+    const TEMPLATE_PATH_SANITIZE_PATTERN = '/[^a-zA-Z0-9\/\-\_\.]+/';
 
     /**
      * Name
