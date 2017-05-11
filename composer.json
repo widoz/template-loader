@@ -1,5 +1,5 @@
 {
-  "name": "template-loader/template-loader",
+  "name": "unprefix/template-loader",
   "description": "A simple hookable template loader for WordPress. Allow you to load templates in chain from child to plugin.",
   "type": "library",
   "license": "GPL2.0",
