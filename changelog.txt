@@ -1,2 +1,10 @@
-= 1.0.0 - 15/05/2017 =
-First release
+= 2.0.0 - 2017/05/21 =
+* Loader constructor now take a DataStorage parameter to use internally.
+* Introduce data storage and split some logic
+* Introduce class DataStorage where store the rendered template 'slug' => 'filepath'.
+* DataStorage can be accessed as Array since implements the ArrayAccess and Countable interfaces.
+* Move logic for sanitize values into a separate class named Sanitizer.
+* Move sanitizePath method within the Sanitizer class.
+
+= 1.0.0 - 2017/05/15 =
+* First release
