@@ -1,6 +1,4 @@
 <?php
-namespace TemplateLoader;
-
 /**
  * File System
  *
@@ -26,6 +24,8 @@ namespace TemplateLoader;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace TemplateLoader;
+
 /**
  * Class Filesystem
  *
@@ -35,37 +35,16 @@ namespace TemplateLoader;
 class Filesystem
 {
     /**
-     * Sanitize path
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @param string $path The path to sanitize
-     *
-     * @return string The sanitized path.
-     */
-    public function sanitizePath($path)
-    {
-        while (false !== strpos($path, '..')) {
-            $path = str_replace('..', '', $path);
-        }
-
-        $path = ('/' !== $path) ? $path : '';
-
-        return $path;
-    }
-
-    /**
      * Get Plugin Dir Path
      *
      * @since  1.0.0
-     * @access public
+     * @access public static
      *
      * @param string $path The path to append to the plugin dir path. Optional. Default to '/'.
      *
      * @return string The plugin dir path
      */
-    public function getPluginDirPath($path = '/')
+    public static function getPluginDirPath($path = '/')
     {
         $path = untrailingslashit(plugin_dir_path(__DIR__)) . '/' . trim($path, '/');
         $path = realpath($path);
@@ -77,13 +56,13 @@ class Filesystem
      * Get Plugin Dir Url
      *
      * @since  1.0.0
-     * @access public
+     * @access public static
      *
      * @param string $path The path to append to the plugin dir url. Optional. Default to '/'.
      *
      * @return string The plugin dir url
      */
-    public function getPluginDirUrl($path = '/')
+    public static function getPluginDirUrl($path = '/')
     {
         $path = untrailingslashit(plugin_dir_url(__DIR__)) . '/' . trim($path, '/');
 

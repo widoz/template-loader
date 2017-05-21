@@ -1,12 +1,10 @@
 <?php
-namespace TemplateLoaderTests;
-
 /**
- * Common Filesystem Functions Trait
+ * SanitizerTest
  *
- * @author     Guido Scialfa <dev@guidoscialfa.com>
- * @copyright  Copyright (c) 2017, Guido Scialfa
- * @license    http://opensource.org/licenses/gpl-2.0.php GPL v2
+ * @author    Guido Scialfa <dev@guidoscialfa.com>
+ * @copyright Copyright (c) 2017, Guido Scialfa
+ * @license   GNU General Public License, version 2
  *
  * Copyright (C) 2017 Guido Scialfa <dev@guidoscialfa.com>
  *
@@ -25,27 +23,23 @@ namespace TemplateLoaderTests;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Class CommonFilesystemFunctionsTrait
- *
- * @since   1.0.0
- * @author  Guido Scialfa <dev@guidoscialfa.com>
- * @package TemplateLoader\Tests
- */
-trait CommonFilesystemFunctionsTrait
+namespace TemplateLoaderTests;
+
+use TemplateLoader\Sanitizer;
+use PHPUnit\Framework\TestCase;
+
+class SanitizerTest extends TestCase
 {
     /**
-     * Include Common functions
+     * Prevent Path Traversal
      */
-    protected static function incCommonFunctions()
+    public function testNotContainDotDotSlash()
     {
-        \WP_Mock::wpFunction('plugin_dir_path', [
-            'return' => dirname(__DIR__) . '/',
-            'times'  => '0+',
-        ]);
-        \WP_Mock::wpFunction('untrailingslashit', [
-            'return' => dirname(__DIR__),
-            'times'  => '0+',
-        ]);
+        $path = '/../this/is/a/../path/../';
+
+        // Sanitize the path.
+        $result = Sanitizer::sanitizePath($path);
+
+        $this->assertNotContains('../', $result);
     }
 }

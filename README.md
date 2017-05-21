@@ -6,4 +6,4 @@ This is not for the WordPress templates in the form of "name-slug.php" with fall
 Indeed this is a loader to build a basic data injection for views (templates).
 
 ## Requirements
-Php >= 5.3.x
+Php >= 5.4.x

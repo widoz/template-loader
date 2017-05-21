@@ -31,7 +31,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class UnprefixTestCase
  *
- * @since   ${SINCE}
+ * @since   2.0.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
 class UnprefixTestCase extends TestCase

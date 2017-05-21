@@ -23,6 +23,8 @@
 
 namespace TemplateLoaderTests;
 
+use TemplateLoader\Filesystem;
+
 /**
  * Class FilesystemTest
  *
@@ -32,30 +34,12 @@ namespace TemplateLoaderTests;
 final class FilesystemTest extends UnprefixTestCase
 {
     /**
-     * @var \TemplateLoader\Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * Prevent Path Traversal
-     */
-    public function testNotContainDotDotSlash()
-    {
-        $path = '/../this/is/a/../path/../';
-
-        // Sanitize the path.
-        $result = $this->filesystem->sanitizePath($path);
-
-        $this->assertNotContains('../', $result);
-    }
-
-    /**
      * Test that Directory doesn't exists
      */
     public function testDirNotExists()
     {
         // Retrieve the file path.
-        $result = $this->filesystem->getPluginDirPath('/this/not/exists');
+        $result = Filesystem::getPluginDirPath('/this/not/exists');
 
         $this->assertInternalType('boolean', $result);
         $this->assertEquals(false, $result);
@@ -67,18 +51,9 @@ final class FilesystemTest extends UnprefixTestCase
     public function testFileExistsWithinPluginDirPath()
     {
         $filePath = '/tests/assets/existsFile.php';
-        $path     = $this->filesystem->getPluginDirPath($filePath);
+        $path     = Filesystem::getPluginDirPath($filePath);
 
         $this->assertInternalType('string', $path);
         $this->assertNotEmpty($path);
-    }
-
-    /**
-     * FilesystemTest constructor
-     */
-    public function __construct()
-    {
-        $this->filesystem = new \TemplateLoader\Filesystem();
-        parent::__construct();
     }
 }

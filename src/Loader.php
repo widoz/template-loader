@@ -1,6 +1,4 @@
 <?php
-namespace TemplateLoader;
-
 /**
  * Template Loader
  *
@@ -26,6 +24,8 @@ namespace TemplateLoader;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace TemplateLoader;
+
 /**
  * Class Engine
  *
@@ -35,26 +35,6 @@ namespace TemplateLoader;
  */
 class Loader
 {
-    /**
-     * Template Slug Sanitize Pattern
-     *
-     * @since  1.0.0
-     * @access protected
-     *
-     * @var string The pattern used to sanitize the template slug.
-     */
-    const TEMPLATE_SLUG_SANITIZE_PATTERN = '/[^a-z0-9\-\_]*/';
-
-    /**
-     * Template Path Sanitize Pattern
-     *
-     * @since  1.0.0
-     * @access protected
-     *
-     * @var string The pattern used to sanitize the templates path.
-     */
-    const TEMPLATE_PATH_SANITIZE_PATTERN = '/[^a-zA-Z0-9\/\-\_\.]+/';
-
     /**
      * Name
      *
@@ -86,56 +66,14 @@ class Loader
     protected $data;
 
     /**
-     * Filesystem
+     * Data Storage
      *
-     * @since  1.0.0
+     * @since  2.0.0
      * @access protected
      *
-     * @var Filesystem The class instance
+     * @var DataStorage The instance of the storage where store the rendered templates
      */
-    protected $filesystem;
-
-    /**
-     * Sanitize Template Slug
-     *
-     * @since  1.0.0
-     * @access protected
-     *
-     * @param string $slug The slug of the template.
-     *
-     * @return string The sanitize slug. May be empty.
-     */
-    protected function sanitizeTemplateSlug($slug)
-    {
-        return str_replace('-', '_', preg_replace(self::TEMPLATE_SLUG_SANITIZE_PATTERN, '', $slug));
-    }
-
-    /**
-     * Sanitize template file path
-     *
-     * @todo   Explode every path and sanitize every part?
-     *
-     * @since  1.0.0
-     * @access protected
-     *
-     * @param array $tmplPath The paths for the view.
-     *
-     * @return array The sanitize templates path
-     */
-    protected function sanitizeTemplatePath(array $tmplPath)
-    {
-        $tmp = array();
-
-        foreach ($tmplPath as $path) {
-            // Sanitize template path and remove the path separator.
-            // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
-            $tmp[] = $this->filesystem->sanitizePath(
-                trim(preg_replace(self::TEMPLATE_PATH_SANITIZE_PATTERN, '', $path), '/')
-            );
-        }
-
-        return $tmp;
-    }
+    protected $dataStorage;
 
     /**
      * Retrieve the file path
@@ -162,7 +100,7 @@ class Loader
                 }
             }
         } elseif (is_string($tmplPath)) {
-            $path = $this->filesystem->getPluginDirPath($tmplPath);
+            $path = Filesystem::getPluginDirPath($tmplPath);
         }
 
         return $path;
@@ -175,14 +113,14 @@ class Loader
      * @access public
      *
      * @param string       $slug         The slug of the current template instance.
-     * @param Filesystem   $filesystem   The filesystem class instance to use internally.
+     * @param DataStorage  $storage      A data storage instance where store found and used templates path.
      * @param string|array $templatePath The template paths where looking for the template file. Optional.
      */
-    public function __construct($slug, Filesystem $filesystem, $templatePath = null)
+    public function __construct($slug, DataStorage $storage, $templatePath = null)
     {
-        $this->slug       = $this->sanitizeTemplateSlug($slug);
-        $this->filesystem = $filesystem;
-        $this->data       = null;
+        $this->slug        = Sanitizer::sanitizeSlugRegExp($slug);
+        $this->data        = null;
+        $this->dataStorage = $storage;
 
         $this->setTemplatePath($templatePath);
     }
@@ -219,7 +157,10 @@ class Loader
     {
         $templatesPath = (array)$templatesPath;
         // Sanitize and retrieve the found template path.
-        $this->templatesPath = $this->sanitizeTemplatePath($templatesPath);
+        $this->templatesPath = array_map(
+            ['TemplateLoader\\Sanitizer', 'sanitizePathRegExp'],
+            $templatesPath
+        );
     }
 
     /**
@@ -284,8 +225,11 @@ class Loader
      */
     public function render()
     {
-        // Try to retrieve the file path for the template.
-        $filePath = $this->getFilePath();
+        // Retrieve the template from the storage if exists.
+        // Try to retrieve the file path for the template otherwise.
+        $filePath = isset($this->dataStorage[$this->slug]) ?
+            $this->dataStorage[$this->slug] :
+            $this->getFilePath();
 
         // Empty string or bool depend by the conditional above.
         if (! file_exists($filePath)) {
@@ -324,8 +268,10 @@ class Loader
         // @todo create a loaderInclude and pass $data. Avoid using $this within the file.
         // @codingStandardsIgnoreStart
         include $filePath;
+        // @codingStandardsIgnoreEnd
 
-        // @codingStandardsIgnoreEng
+        // After the template has been rendered, store it for a next use.
+        $this->dataStorage[$this->slug] = $filePath;
 
         return $filePath;
     }

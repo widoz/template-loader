@@ -24,9 +24,9 @@
 namespace TemplateLoaderTests;
 
 use Brain\Monkey\Functions;
+use TemplateLoader\DataStorage;
 use TemplateLoader\Filesystem;
 use TemplateLoader\Loader;
-use Andrew;
 
 /**
  * Class LoaderTest
@@ -40,22 +40,6 @@ final class LoaderTest extends UnprefixTestCase
      * @var Loader The loader instance
      */
     private $loader;
-
-    /**
-     * Test that the slug is sanitized correctly
-     */
-    public function testSanitizeTemplateSlug()
-    {
-        $specialSlug = '/this/is/1234567890/a/special/!"£$%&/()=?^é*°§ç:;_/slug/';
-        $proxy       = new Andrew\Proxy($this->loader);
-
-        $slug = $proxy->sanitizeTemplateSlug($specialSlug);
-
-        $this->assertEquals(
-            'thisis1234567890aspecial_slug',
-            $slug
-        );
-    }
 
     /**
      * Test Set null as template path
@@ -96,11 +80,16 @@ final class LoaderTest extends UnprefixTestCase
         $this->loader->render();
 
         $this->expectOutputString('This is an existing File php');
+
+        return $this->loader;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function setUp()
     {
-        $this->loader = new Loader('loader_slug', new Filesystem());
+        $this->loader = new Loader('loader_slug', new DataStorage);
         parent::setUp();
     }
 }
