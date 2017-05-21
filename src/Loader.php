@@ -118,15 +118,15 @@ class Loader
      * @since  1.0.0
      * @access protected
      *
-     * @param array|string $tmplPath The paths for the view.
+     * @param array $tmplPath The paths for the view.
      *
      * @return array The sanitize templates path
      */
-    protected function sanitizeTemplatePath($tmplPath)
+    protected function sanitizeTemplatePath(array $tmplPath)
     {
         $tmp = array();
 
-        foreach ((array)$tmplPath as $path) {
+        foreach ($tmplPath as $path) {
             // Sanitize template path and remove the path separator.
             // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
             $tmp[] = $this->filesystem->sanitizePath(
@@ -143,11 +143,11 @@ class Loader
      * @since  1.0.0
      * @access protected
      *
-     * @param string|array $tmplPath The paths of the view files.
+     * @param array $tmplPath The paths of the view files.
      *
      * @return string The first path found. Empty string if not found.
      */
-    protected function getPluginFilePath($tmplPath)
+    protected function getPluginFilePath(array $tmplPath)
     {
         $path = '';
 
@@ -205,55 +205,6 @@ class Loader
     }
 
     /**
-     * Get Templates Path
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @return array The templates path list
-     */
-    public function getTemplatePath()
-    {
-        return $this->templatesPath;
-    }
-
-    /**
-     * Get the file path
-     *
-     * Retrieve the file path for the view
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @param array|string $tmplPath The templates path.
-     *
-     * @return string The found file path. Empty string if not found.
-     */
-    public function getFilePath($tmplPath)
-    {
-        // Try to retrieve the theme file path from child or parent for first.
-        // Fallback to Plugin templates path.
-        $filePath = locate_template($tmplPath, false, false);
-
-        /**
-         * Use Plugin
-         *
-         * @since 1.0.0
-         *
-         * @param        string    'yes' To search within the plugin directory. False otherwise.
-         * @param string $filePath The current view path.
-         */
-        $usePlugin = apply_filters('tmploader_use_plugin', 'yes', $filePath);
-
-        // Looking for the file within the plugin if allowed.
-        if (! $filePath && 'yes' === $usePlugin) {
-            $filePath = $this->getPluginFilePath($tmplPath);
-        }
-
-        return $filePath;
-    }
-
-    /**
      * Set Templates Path
      *
      * Set the templates path. Where to search for a valid file for the template.
@@ -272,6 +223,56 @@ class Loader
     }
 
     /**
+     * Get Templates Path
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @return array The templates path list
+     */
+    public function getTemplatePath()
+    {
+        return $this->templatesPath;
+    }
+
+    /**
+     * Get the file path
+     *
+     * Retrieve the file path for the view, hierarchy try to find the file within the child, parent and last within
+     * the plugin.
+     *
+     * @uses   locate_template() To locate the view file within the theme (child or parent).
+     *
+     * @since  1.0.0
+     * @access public
+     *
+     * @return string The found file path. Empty string if not found.
+     */
+    public function getFilePath()
+    {
+        // Try to retrieve the theme file path from child or parent for first.
+        // Fallback to Plugin templates path.
+        $filePath = locate_template($this->templatesPath, false, false);
+
+        /**
+         * Use Plugin
+         *
+         * @since 1.0.0
+         *
+         * @param        string    'yes' To search within the plugin directory. False otherwise.
+         * @param string $filePath The current view path.
+         */
+        $usePlugin = apply_filters('tmploader_use_plugin', 'yes', $filePath);
+
+        // Looking for the file within the plugin if allowed.
+        if (! $filePath && 'yes' === $usePlugin) {
+            $filePath = $this->getPluginFilePath($this->templatesPath);
+        }
+
+        return $filePath;
+    }
+
+    /**
      * Render
      *
      * @since  1.0.0
@@ -284,17 +285,14 @@ class Loader
     public function render()
     {
         // Try to retrieve the file path for the template.
-        $filePath = $this->getFilePath($this->templatesPath);
+        $filePath = $this->getFilePath();
 
         // Empty string or bool depend by the conditional above.
         if (! file_exists($filePath)) {
-            throw new \Exception(
-                sprintf(
-                // Translators: %s The path of the template file within the server.
-                    __('Template Loader: No way to locate the template %s.'),
-                    $filePath
-                )
-            );
+            throw new \Exception(sprintf(
+                'Template Loader: No way to locate the template %s.',
+                $filePath
+            ));
         }
 
         /**
@@ -324,8 +322,10 @@ class Loader
         // Include the template.
         // Don't use include_once because some templates/views may need to be included multiple times.
         // @todo create a loaderInclude and pass $data. Avoid using $this within the file.
-        /* @noinspection PhpIncludeInspection */
+        // @codingStandardsIgnoreStart
         include $filePath;
+
+        // @codingStandardsIgnoreEng
 
         return $filePath;
     }
