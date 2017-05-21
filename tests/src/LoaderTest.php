@@ -1,11 +1,4 @@
 <?php
-namespace TemplateLoaderTests;
-
-use PHPUnit\Framework\TestCase;
-use TemplateLoader\Filesystem;
-use TemplateLoader\Loader;
-use Andrew;
-
 /**
  * @author     Guido Scialfa <dev@guidoscialfa.com>
  * @copyright  Copyright (c) 2017, Guido Scialfa
@@ -28,16 +21,21 @@ use Andrew;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace TemplateLoaderTests;
+
+use Brain\Monkey\Functions;
+use TemplateLoader\Filesystem;
+use TemplateLoader\Loader;
+use Andrew;
+
 /**
  * Class LoaderTest
  *
  * @since   1.0.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
-final class LoaderTest extends TestCase
+final class LoaderTest extends UnprefixTestCase
 {
-    use CommonFilesystemFunctionsTrait;
-
     /**
      * @var Loader The loader instance
      */
@@ -50,26 +48,12 @@ final class LoaderTest extends TestCase
     {
         $specialSlug = '/this/is/1234567890/a/special/!"£$%&/()=?^é*°§ç:;_/slug/';
         $proxy       = new Andrew\Proxy($this->loader);
-        $slug        = $proxy->sanitizeTemplateSlug($specialSlug);
+
+        $slug = $proxy->sanitizeTemplateSlug($specialSlug);
 
         $this->assertEquals(
             'thisis1234567890aspecial_slug',
             $slug
-        );
-    }
-
-    /**
-     * Test that the path is sanitized correctly
-     */
-    public function testSanitizeTemplatePath()
-    {
-        $specialPath = '/this/../path/doesnt/&/contain/non/ spaces /and/0123456789/special/chars/!"£$%&/()=?^*é°§ç:;';
-        $proxy       = new Andrew\Proxy($this->loader);
-        $path        = $proxy->sanitizeTemplatePath($specialPath);
-
-        $this->assertEquals(
-            'this//path/doesnt//contain/non/spaces/and/0123456789/special/chars',
-            $path[0]
         );
     }
 
@@ -88,24 +72,6 @@ final class LoaderTest extends TestCase
     }
 
     /**
-     * Test that the getPluginFilePath load the correct template
-     */
-    public function testFoundExistingPluginFile()
-    {
-        self::incCommonFunctions();
-
-        $paths = [
-            '/this/file/doesnt/exists',
-            '/tests/assets/existsFile.php',
-        ];
-
-        $proxy     = new Andrew\Proxy($this->loader);
-        $foundPath = $proxy->getPluginFilePath($paths);
-
-        $this->assertContains('/tests/assets/existsFile.php', $foundPath);
-    }
-
-    /**
      * Test Set Template Path
      */
     public function testSetTemplatePath()
@@ -118,39 +84,23 @@ final class LoaderTest extends TestCase
     }
 
     /**
-     * @depends testSetTemplatePath
+     * Test Render
      */
     public function testRender()
     {
-        $this->markTestIncomplete();
-
         $filePath = '/tests/assets/existsFile.php';
+        Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
 
         $this->loader->setTemplatePath($filePath);
-        $response = $this->loader->render();
+        $this->loader->setData(new \stdClass());
+        $this->loader->render();
+
+        $this->expectOutputString('This is an existing File php');
     }
 
-    /**
-     * LoaderTest constructor
-     */
-    public function __construct()
+    protected function setUp()
     {
         $this->loader = new Loader('loader_slug', new Filesystem());
-    }
-
-    /**
-     * Setup
-     */
-    public function setUp()
-    {
-        \WP_Mock::setUp();
-    }
-
-    /**
-     * TearDown
-     */
-    public function tearDown()
-    {
-        \WP_Mock::tearDown();
+        parent::setUp();
     }
 }

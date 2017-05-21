@@ -1,8 +1,4 @@
 <?php
-namespace TemplateLoaderTests;
-
-use PHPUnit\Framework\TestCase;
-
 /**
  * @author     Guido Scialfa <dev@guidoscialfa.com>
  * @copyright  Copyright (c) 2017, Guido Scialfa
@@ -25,16 +21,16 @@ use PHPUnit\Framework\TestCase;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace TemplateLoaderTests;
+
 /**
  * Class FilesystemTest
  *
  * @since   1.0.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
-final class FilesystemTest extends TestCase
+final class FilesystemTest extends UnprefixTestCase
 {
-    use CommonFilesystemFunctionsTrait;
-
     /**
      * @var \TemplateLoader\Filesystem
      */
@@ -58,8 +54,6 @@ final class FilesystemTest extends TestCase
      */
     public function testDirNotExists()
     {
-        self::incCommonFunctions();
-
         // Retrieve the file path.
         $result = $this->filesystem->getPluginDirPath('/this/not/exists');
 
@@ -72,8 +66,6 @@ final class FilesystemTest extends TestCase
      */
     public function testFileExistsWithinPluginDirPath()
     {
-        self::incCommonFunctions();
-
         $filePath = '/tests/assets/existsFile.php';
         $path     = $this->filesystem->getPluginDirPath($filePath);
 
@@ -87,21 +79,6 @@ final class FilesystemTest extends TestCase
     public function __construct()
     {
         $this->filesystem = new \TemplateLoader\Filesystem();
-    }
-
-    /**
-     * Set Up
-     */
-    public function setUp()
-    {
-        \WP_Mock::setUp();
-    }
-
-    /**
-     * Tear Down
-     */
-    public function tearDown()
-    {
-        \WP_Mock::tearDown();
+        parent::__construct();
     }
 }

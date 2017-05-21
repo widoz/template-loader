@@ -12,12 +12,12 @@
   "autoload": {
     "psr-4": {
       "TemplateLoader\\": "src/",
-      "TemplateLoaderTests\\": "tests/"
+      "TemplateLoaderTests\\": "tests/src/"
     }
   },
   "require-dev": {
+    "gmazzap/andrew": "^2.1",
     "phpunit/phpunit": "^5.7",
-    "gmazzap/andrew": "^1.1",
-    "10up/wp_mock": "dev-master"
+    "brain/monkey": "^1.4"
   }
 }
