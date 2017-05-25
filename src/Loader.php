@@ -92,7 +92,7 @@ class Loader
         if (is_array($tmplPath)) {
             foreach ($tmplPath as $path) {
                 // Get the file path from the current template path item.
-                $path = $this->getPluginFilePath($path);
+                $path = $this->getPluginFilePath([$path]);
 
                 // We have the file?
                 if (file_exists($path)) {
