@@ -81,18 +81,18 @@ class Loader
      * @since  1.0.0
      * @access protected
      *
-     * @param array $tmplPath The paths of the view files.
+     * @param array|string $tmplPath The paths of the view files.
      *
      * @return string The first path found. Empty string if not found.
      */
-    protected function getPluginFilePath(array $tmplPath)
+    protected function getPluginFilePath($tmplPath)
     {
         $path = '';
 
         if (is_array($tmplPath)) {
             foreach ($tmplPath as $path) {
                 // Get the file path from the current template path item.
-                $path = $this->getPluginFilePath([$path]);
+                $path = $this->getPluginFilePath($path);
 
                 // We have the file?
                 if (file_exists($path)) {
