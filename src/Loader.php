@@ -258,11 +258,6 @@ class Loader
          */
         $data = apply_filters("tmploader_template_engine_data_{$this->slug}", $data);
 
-        // If data is empty, no other actions are needed.
-        if (! $data) {
-            return '';
-        }
-
         // Include the template.
         // Don't use include_once because some templates/views may need to be included multiple times.
         // @todo create a loaderInclude and pass $data. Avoid using $this within the file.
