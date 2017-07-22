@@ -1,6 +1,6 @@
 <?php
 /**
- * TemplateLoaderInterface
+ * Template Interface
  *
  * @author    Guido Scialfa <dev@guidoscialfa.com>
  * @copyright Copyright (c) 2017, Guido Scialfa
@@ -26,13 +26,13 @@
 namespace TemplateLoader;
 
 /**
- * Interface TemplateLoaderInterface
+ * Interface TemplateInterface
  *
  * @since   ${SINCE}
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  * @package TemplateLoader
  */
-interface TemplateLoaderInterface
+interface TemplateInterface
 {
     /**
      * Template Data
