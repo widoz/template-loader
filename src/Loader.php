@@ -85,14 +85,14 @@ class Loader
      *
      * @return string The first path found. Empty string if not found.
      */
-    protected function getPluginFilePath($tmplPath)
+    protected function pluginFilePath($tmplPath)
     {
         $path = '';
 
         if (is_array($tmplPath)) {
             foreach ($tmplPath as $path) {
                 // Get the file path from the current template path item.
-                $path = $this->getPluginFilePath($path);
+                $path = $this->pluginFilePath($path);
 
                 // We have the file?
                 if (file_exists($path)) {
@@ -207,7 +207,7 @@ class Loader
 
         // Looking for the file within the plugin if allowed.
         if (! $filePath && 'yes' === $usePlugin) {
-            $filePath = $this->getPluginFilePath($this->templatesPath);
+            $filePath = $this->pluginFilePath($this->templatesPath);
         }
 
         return $filePath;
