@@ -93,8 +93,6 @@ class Sanitizer
     /**
      * Sanitize file path By RegExp
      *
-     * @todo   Explode every path and sanitize every part?
-     *
      * @since  1.0.0
      * @access protected
      *
