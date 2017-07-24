@@ -1,6 +1,7 @@
 = X.X.X - XXXX/XX/XX =
 * Introduce TemplateLoaderInterface.
 * Introduce Closure to avoid $this usage within the template.
+* Introduce LoaderInterface for Loader class.
 * Remove the check for the empty $data value. Let templates to be included even if data is not set. We cannot know if $data is useful or not.
 
 = 2.0.0 - 2017/05/21 =
