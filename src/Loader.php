@@ -229,10 +229,10 @@ final class Loader implements LoaderInterface
          */
         $filePath = apply_filters('tmploader_template_file_path', $filePath, $data);
 
-        (\Closure::bind(function () use ($filePath, $data) {
+        \Closure::bind(function () use ($filePath, $data) {
             // Include the template.
             include $filePath;
-        }, null))();
+        }, null)();
 
         // After the template has been rendered, store it for a next use.
         $this->dataStorage[$this->slug] = $filePath;
