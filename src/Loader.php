@@ -33,27 +33,27 @@ namespace TemplateLoader;
  * @package TemplateLoader
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
-class Loader
+final class Loader implements LoaderInterface
 {
     /**
      * Name
      *
      * @since  1.0.0
-     * @access protected
+     * @access private
      *
      * @var string The slug of the current template instance.
      */
-    protected $slug;
+    private $slug;
 
     /**
      * Templates Path
      *
      * @since  1.0.0
-     * @access protected
+     * @access private
      *
      * @var array The list of the view files
      */
-    protected $templatesPath;
+    private $templatesPath;
 
     /**
      * Data
@@ -63,7 +63,7 @@ class Loader
      *
      * @var \stdClass The data object
      */
-    protected $data;
+    private $data;
 
     /**
      * Data Storage
@@ -73,19 +73,19 @@ class Loader
      *
      * @var DataStorage The instance of the storage where store the rendered templates
      */
-    protected $dataStorage;
+    private $dataStorage;
 
     /**
      * Retrieve the file path
      *
      * @since  1.0.0
-     * @access protected
+     * @access private
      *
      * @param array|string $tmplPath The paths of the view files.
      *
      * @return string The first path found. Empty string if not found.
      */
-    protected function pluginFilePath($tmplPath)
+    private function pluginFilePath($tmplPath)
     {
         $path = '';
 
@@ -126,16 +126,7 @@ class Loader
     }
 
     /**
-     * Set Data
-     *
-     * Set the data for the view.
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @param \stdClass $data The data for the view.
-     *
-     * @return void
+     * @inheritdoc
      */
     public function setData(\stdClass $data)
     {
@@ -143,15 +134,7 @@ class Loader
     }
 
     /**
-     * Set Templates Path
-     *
-     * Set the templates path. Where to search for a valid file for the template.
-     * This also sanitize the templates path.
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @param array|string $templatesPath The templates path.
+     * @inheritdoc
      */
     public function setTemplatePath($templatesPath)
     {
@@ -164,12 +147,7 @@ class Loader
     }
 
     /**
-     * Get Templates Path
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @return array The templates path list
+     * @inheritdoc
      */
     public function getTemplatePath()
     {
@@ -177,17 +155,7 @@ class Loader
     }
 
     /**
-     * Get the file path
-     *
-     * Retrieve the file path for the view, hierarchy try to find the file within the child, parent and last within
-     * the plugin.
-     *
-     * @uses   locate_template() To locate the view file within the theme (child or parent).
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @return string The found file path. Empty string if not found.
+     * @inheritdoc
      */
     public function getFilePath()
     {
@@ -214,14 +182,7 @@ class Loader
     }
 
     /**
-     * Render
-     *
-     * @since  1.0.0
-     * @access public
-     *
-     * @throws \Exception In case the template path is incorrect or cannot be located.
-     *
-     * @return string The template filename if one is located.
+     * @inheritdoc
      */
     public function render()
     {
