@@ -85,6 +85,24 @@ final class LoaderTest extends UnprefixTestCase
     }
 
     /**
+     * Test Data works as expected within closure.
+     */
+    public function testDataWorkAsExpectedWithinClosure()
+    {
+        $filePath = '/tests/assets/fileTestDataProperty.php';
+        Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
+
+        $data                 = new \stdClass();
+        $data->propertyToTest = 'Value of the property to test';
+
+        $this->loader->setTemplatePath($filePath);
+        $this->loader->setData($data);
+        $this->loader->render();
+
+        $this->expectOutputString($data->propertyToTest);
+    }
+
+    /**
      * @inheritdoc
      */
     protected function setUp()

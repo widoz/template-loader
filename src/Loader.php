@@ -268,11 +268,10 @@ class Loader
          */
         $filePath = apply_filters('tmploader_template_file_path', $filePath, $data);
 
-        // Include the template.
-        // Don't use include_once because some templates/views may need to be included multiple times.
-        // @todo create a loaderInclude and pass $data. Avoid using $this within the file.
-        // @codingStandardsIgnoreLine
-        include $filePath;
+        (\Closure::bind(function () use ($filePath, $data) {
+            // Include the template.
+            include $filePath;
+        }, null))();
 
         // After the template has been rendered, store it for a next use.
         $this->dataStorage[$this->slug] = $filePath;
