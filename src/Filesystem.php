@@ -38,7 +38,6 @@ class Filesystem
      * Get Plugin Dir Path
      *
      * @since  1.0.0
-     * @access public static
      *
      * @param string $path The path to append to the plugin dir path. Optional. Default to '/'.
      *
@@ -56,7 +55,6 @@ class Filesystem
      * Get Plugin Dir Url
      *
      * @since  1.0.0
-     * @access public static
      *
      * @param string $path The path to append to the plugin dir url. Optional. Default to '/'.
      *

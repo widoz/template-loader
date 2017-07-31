@@ -38,7 +38,6 @@ class Sanitizer
      * Slug Sanitizer Pattern
      *
      * @since  2.0.0
-     * @access public
      *
      * @var string The pattern for array keys
      */
@@ -48,7 +47,6 @@ class Sanitizer
      * Path Sanitizer Pattern
      *
      * @since  2.0.0
-     * @access public
      *
      * @var string The pattern to sanitize the paths
      */
@@ -58,7 +56,6 @@ class Sanitizer
      * Sanitize path
      *
      * @since  2.0.0
-     * @access public
      *
      * @param string $path The path to sanitize
      *
@@ -79,7 +76,6 @@ class Sanitizer
      * Sanitize Slug By RegExp
      *
      * @since  1.0.0
-     * @access protected static
      *
      * @param string $slug The slug to sanitize.
      *
@@ -94,7 +90,6 @@ class Sanitizer
      * Sanitize file path By RegExp
      *
      * @since  1.0.0
-     * @access protected
      *
      * @param string $path The path to sanitize.
      *

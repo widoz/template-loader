@@ -40,7 +40,6 @@ interface TemplateInterface
      * The stdClass object to use as container for the view data.
      *
      * @since  ${SINCE}
-     * @access public
      *
      * @return \stdClass A instance that contain the view data properties
      */
@@ -50,7 +49,6 @@ interface TemplateInterface
      * Template
      *
      * @since  ${SINCE}
-     * @access public
      *
      * @param \stdClass $data The data for the template view.
      *

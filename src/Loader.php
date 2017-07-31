@@ -39,7 +39,6 @@ final class Loader implements LoaderInterface
      * Name
      *
      * @since  1.0.0
-     * @access private
      *
      * @var string The slug of the current template instance.
      */
@@ -49,7 +48,6 @@ final class Loader implements LoaderInterface
      * Templates Path
      *
      * @since  1.0.0
-     * @access private
      *
      * @var array The list of the view files
      */
@@ -59,7 +57,6 @@ final class Loader implements LoaderInterface
      * Data
      *
      * @since  1.0.0
-     * @access protected
      *
      * @var \stdClass The data object
      */
@@ -69,7 +66,6 @@ final class Loader implements LoaderInterface
      * Data Storage
      *
      * @since  2.0.0
-     * @access protected
      *
      * @var DataStorage The instance of the storage where store the rendered templates
      */
@@ -79,7 +75,6 @@ final class Loader implements LoaderInterface
      * Retrieve the file path
      *
      * @since  1.0.0
-     * @access private
      *
      * @param array|string $tmplPath The paths of the view files.
      *
@@ -110,7 +105,6 @@ final class Loader implements LoaderInterface
      * Construct
      *
      * @since  1.0.0
-     * @access public
      *
      * @param string       $slug         The slug of the current template instance.
      * @param DataStorage  $storage      A data storage instance where store found and used templates path.

@@ -39,7 +39,6 @@ interface LoaderInterface
      * Set the data for the view.
      *
      * @since  1.0.0
-     * @access public
      *
      * @param \stdClass $data The data for the view.
      *
@@ -54,7 +53,6 @@ interface LoaderInterface
      * This also sanitize the templates path.
      *
      * @since  1.0.0
-     * @access public
      *
      * @param array|string $templatesPath The templates path.
      */
@@ -64,7 +62,6 @@ interface LoaderInterface
      * Get Templates Path
      *
      * @since  1.0.0
-     * @access public
      *
      * @return array The templates path list
      */
@@ -79,7 +76,6 @@ interface LoaderInterface
      * @uses   locate_template() To locate the view file within the theme (child or parent).
      *
      * @since  1.0.0
-     * @access public
      *
      * @return string The found file path. Empty string if not found.
      */
@@ -89,7 +85,6 @@ interface LoaderInterface
      * Render
      *
      * @since  1.0.0
-     * @access public
      *
      * @throws \Exception In case the template path is incorrect or cannot be located.
      *

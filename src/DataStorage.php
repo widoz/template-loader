@@ -38,7 +38,6 @@ class DataStorage implements \ArrayAccess, \Countable
      * The Container
      *
      * @since  2.0.0
-     * @access protected
      *
      * @var array The container
      */
@@ -58,7 +57,6 @@ class DataStorage implements \ArrayAccess, \Countable
      * Offset Exists
      *
      * @since  2.0.0
-     * @access public
      *
      * @param mixed $offset
      *
@@ -73,7 +71,6 @@ class DataStorage implements \ArrayAccess, \Countable
      * Offset Get
      *
      * @since  2.0.0
-     * @access public
      *
      * @param mixed $offset The offset form which retrieve the data.
      *
@@ -95,7 +92,6 @@ class DataStorage implements \ArrayAccess, \Countable
      * Offset Set
      *
      * @since  2.0.0
-     * @access public
      *
      * @param mixed $offset The offset where store the data.
      * @param mixed $value  The value to set.
@@ -111,7 +107,6 @@ class DataStorage implements \ArrayAccess, \Countable
      * Unset Offset
      *
      * @since  2.0.0
-     * @access public
      *
      * @param mixed $offset The offset to remove.
      *
@@ -126,7 +121,6 @@ class DataStorage implements \ArrayAccess, \Countable
      * Count Data
      *
      * @since  2.0.0
-     * @access public
      *
      * @return int The number of data set
      */
