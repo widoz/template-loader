@@ -90,6 +90,7 @@ final class LoaderTest extends UnprefixTestCase
     public function testDataWorkAsExpectedWithinClosure()
     {
         $filePath = '/tests/assets/fileTestDataProperty.php';
+
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
 
         $data                 = new \stdClass();
@@ -100,6 +101,27 @@ final class LoaderTest extends UnprefixTestCase
         $this->loader->render();
 
         $this->expectOutputString($data->propertyToTest);
+    }
+
+    /**
+     * Test Locate file that use plugin. Files path not the same.
+     */
+    public function testLocateFileUsePlugin()
+    {
+        $filePath = '/tests/assets/notExistsFile.php';
+
+        // The file must not be found within the theme.
+        Functions::when('locate_template')->justReturn('');
+        Functions::when('apply_filters')->justReturn('yes');
+
+        $mock = \Mockery::spy('overload:TemplateLoader\\Plugin');
+        $mock->shouldReceive('pluginDirPath')->andReturn('/plugin/dir/path' . $filePath);
+
+        $this->loader->setTemplatePath($filePath);
+
+        $located = $this->loader->locateFile();
+
+        $this->assertNotSame($filePath, $located);
     }
 
     /**
