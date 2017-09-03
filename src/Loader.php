@@ -130,6 +130,14 @@ final class Loader implements LoaderInterface
     /**
      * @inheritdoc
      */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setTemplatePath($templatesPath)
     {
         $templatesPath = (array)$templatesPath;
@@ -151,7 +159,7 @@ final class Loader implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function getFilePath()
+    public function locateFile()
     {
         // Try to retrieve the theme file path from child or parent for first.
         // Fallback to Plugin templates path.
@@ -184,7 +192,7 @@ final class Loader implements LoaderInterface
         // Try to retrieve the file path for the template otherwise.
         $filePath = isset($this->dataStorage[$this->slug]) ?
             $this->dataStorage[$this->slug] :
-            $this->getFilePath();
+            $this->locateFile();
 
         // Empty string or bool depend by the conditional above.
         if (! file_exists($filePath)) {
@@ -213,7 +221,7 @@ final class Loader implements LoaderInterface
          */
         $data = apply_filters("tmploader_template_engine_data_{$this->slug}", $data);
 
-        // If data is empty, no other actions are needed.
+        // If data is empty, no other actions is needed.
         if (! $data) {
             return '';
         }
@@ -228,6 +236,7 @@ final class Loader implements LoaderInterface
          */
         $filePath = apply_filters('tmploader_template_file_path', $filePath, $data);
 
+        // Avoid usage of $this within the template.
         $includePathClosure = \Closure::bind(function () use ($filePath, $data) {
             include $filePath;
         }, null);

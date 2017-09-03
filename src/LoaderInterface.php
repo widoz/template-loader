@@ -47,6 +47,17 @@ interface LoaderInterface
     public function setData(\stdClass $data);
 
     /**
+     * Get Data
+     *
+     * Get the data for the view
+     *
+     * @since ${SINCE}
+     *
+     * @return \stdClass The data object
+     */
+    public function getData();
+
+    /**
      * Set Templates Path
      *
      * Set the templates path. Where to search for a valid file for the template.
@@ -68,18 +79,18 @@ interface LoaderInterface
     public function getTemplatePath();
 
     /**
-     * Get the file path
+     * Locate template file
      *
-     * Retrieve the file path for the view, hierarchy try to find the file within the child, parent and last within
+     * Locate the file path for the view, hierarchy try to find the file within the child, parent and last within
      * the plugin.
      *
      * @uses   locate_template() To locate the view file within the theme (child or parent).
      *
-     * @since  1.0.0
+     * @since  ${SINCE}
      *
      * @return string The found file path. Empty string if not found.
      */
-    public function getFilePath();
+    public function locateFile();
 
     /**
      * Render
