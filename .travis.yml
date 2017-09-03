@@ -5,4 +5,3 @@ php:
     - '7.1'
 install:
     composer install
-script: phpunit --process-isolation --static-backup --globals-backup
