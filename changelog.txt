@@ -1,4 +1,4 @@
-= X.X.X - XXXX/XX/XX =
+= 2.1.0 - 2017/09/03 =
 * Introduce TemplateLoaderInterface.
 * Introduce Closure to avoid $this usage within the template.
 * Introduce LoaderInterface for Loader class.
