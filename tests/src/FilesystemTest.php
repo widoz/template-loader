@@ -39,7 +39,7 @@ final class FilesystemTest extends UnprefixTestCase
     public function testDirNotExists()
     {
         // Retrieve the file path.
-        $result = Filesystem::getPluginDirPath('/this/not/exists');
+        $result = Filesystem::pluginDirPath('/this/not/exists');
 
         $this->assertInternalType('boolean', $result);
         $this->assertEquals(false, $result);
@@ -51,7 +51,7 @@ final class FilesystemTest extends UnprefixTestCase
     public function testFileExistsWithinPluginDirPath()
     {
         $filePath = '/tests/assets/existsFile.php';
-        $path     = Filesystem::getPluginDirPath($filePath);
+        $path     = Filesystem::pluginDirPath($filePath);
 
         $this->assertInternalType('string', $path);
         $this->assertNotEmpty($path);

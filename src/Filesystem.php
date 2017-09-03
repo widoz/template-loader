@@ -43,7 +43,7 @@ class Filesystem
      *
      * @return string The plugin dir path
      */
-    public static function getPluginDirPath($path = '/')
+    public static function pluginDirPath($path = '/')
     {
         $path = untrailingslashit(plugin_dir_path(__DIR__)) . '/' . trim($path, '/');
         $path = realpath($path);
@@ -60,7 +60,7 @@ class Filesystem
      *
      * @return string The plugin dir url
      */
-    public static function getPluginDirUrl($path = '/')
+    public static function pluginDirUrl($path = '/')
     {
         $path = untrailingslashit(plugin_dir_url(__DIR__)) . '/' . trim($path, '/');
 
