@@ -213,6 +213,11 @@ final class Loader implements LoaderInterface
          */
         $data = apply_filters("tmploader_template_engine_data_{$this->slug}", $data);
 
+        // If data is empty, no other actions are needed.
+        if (! $data) {
+            return '';
+        }
+
         /**
          * Filter Path
          *
