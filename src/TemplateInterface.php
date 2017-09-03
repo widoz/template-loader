@@ -28,7 +28,7 @@ namespace TemplateLoader;
 /**
  * Interface TemplateInterface
  *
- * @since   ${SINCE}
+ * @since   2.1.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  * @package TemplateLoader
  */
@@ -39,7 +39,7 @@ interface TemplateInterface
      *
      * The stdClass object to use as container for the view data.
      *
-     * @since  ${SINCE}
+     * @since  2.1.0
      *
      * @return \stdClass A instance that contain the view data properties
      */
@@ -48,7 +48,7 @@ interface TemplateInterface
     /**
      * Template
      *
-     * @since  ${SINCE}
+     * @since  2.1.0
      *
      * @param \stdClass $data The data for the template view.
      *

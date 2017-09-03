@@ -28,7 +28,7 @@ namespace TemplateLoader;
 /**
  * Class LoaderInterface
  *
- * @since   ${SINCE}
+ * @since   2.1.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
 interface LoaderInterface
@@ -51,7 +51,7 @@ interface LoaderInterface
      *
      * Get the data for the view
      *
-     * @since ${SINCE}
+     * @since 2.1.0
      *
      * @return \stdClass The data object
      */
@@ -86,7 +86,7 @@ interface LoaderInterface
      *
      * @uses   locate_template() To locate the view file within the theme (child or parent).
      *
-     * @since  ${SINCE}
+     * @since  2.1.0
      *
      * @return string The found file path. Empty string if not found.
      */

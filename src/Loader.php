@@ -229,7 +229,7 @@ final class Loader implements LoaderInterface
         /**
          * Filter Path
          *
-         * @since ${SINCE}
+         * @since 2.1.0
          *
          * @param string    $filePath The path of the file.
          * @param \stdClass $data     The template data.
