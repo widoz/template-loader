@@ -2,7 +2,11 @@
 * Introduce TemplateLoaderInterface.
 * Introduce Closure to avoid $this usage within the template.
 * Introduce LoaderInterface for Loader class.
+* Introduce missed getData() method. If a setter exists a getter must exists.
+* Refactor Filesystem class to Plugin.
+* Refactor getFilePath to locateFile within the LoaderInterface.
 * Remove the check for the empty $data value. Let templates to be included even if data is not set. We cannot know if $data is useful or not.
+* Remove unused pluginDirUrl method from Plugin class.
 
 = 2.0.0 - 2017/05/21 =
 * Loader constructor now take a DataStorage parameter to use internally.
