@@ -1,6 +1,6 @@
 <?php
 /**
- * File System
+ * Plugin
  *
  * @package    TemplateLoader
  * @author     Guido Scialfa <dev@guidoscialfa.com>
@@ -27,12 +27,12 @@
 namespace TemplateLoader;
 
 /**
- * Class Filesystem
+ * Class Plugin
  *
  * @version 1.0.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
-class Filesystem
+class Plugin
 {
     /**
      * Get Plugin Dir Path

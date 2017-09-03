@@ -95,7 +95,7 @@ final class Loader implements LoaderInterface
                 }
             }
         } elseif (is_string($tmplPath)) {
-            $path = Filesystem::pluginDirPath($tmplPath);
+            $path = Plugin::pluginDirPath($tmplPath);
         }
 
         return $path;

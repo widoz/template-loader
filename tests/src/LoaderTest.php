@@ -25,7 +25,7 @@ namespace TemplateLoaderTests;
 
 use Brain\Monkey\Functions;
 use TemplateLoader\DataStorage;
-use TemplateLoader\Filesystem;
+use TemplateLoader\Plugin;
 use TemplateLoader\Loader;
 
 /**

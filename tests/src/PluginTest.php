@@ -23,15 +23,15 @@
 
 namespace TemplateLoaderTests;
 
-use TemplateLoader\Filesystem;
+use TemplateLoader\Plugin;
 
 /**
- * Class FilesystemTest
+ * Class PluginTest
  *
  * @since   1.0.0
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
-final class FilesystemTest extends UnprefixTestCase
+final class PluginTest extends UnprefixTestCase
 {
     /**
      * Test that Directory doesn't exists
@@ -39,7 +39,7 @@ final class FilesystemTest extends UnprefixTestCase
     public function testDirNotExists()
     {
         // Retrieve the file path.
-        $result = Filesystem::pluginDirPath('/this/not/exists');
+        $result = Plugin::pluginDirPath('/this/not/exists');
 
         $this->assertInternalType('boolean', $result);
         $this->assertEquals(false, $result);
@@ -51,7 +51,7 @@ final class FilesystemTest extends UnprefixTestCase
     public function testFileExistsWithinPluginDirPath()
     {
         $filePath = '/tests/assets/existsFile.php';
-        $path     = Filesystem::pluginDirPath($filePath);
+        $path     = Plugin::pluginDirPath($filePath);
 
         $this->assertInternalType('string', $path);
         $this->assertNotEmpty($path);
