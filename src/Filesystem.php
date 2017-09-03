@@ -50,20 +50,4 @@ class Filesystem
 
         return $path;
     }
-
-    /**
-     * Get Plugin Dir Url
-     *
-     * @since  1.0.0
-     *
-     * @param string $path The path to append to the plugin dir url. Optional. Default to '/'.
-     *
-     * @return string The plugin dir url
-     */
-    public static function pluginDirUrl($path = '/')
-    {
-        $path = untrailingslashit(plugin_dir_url(__DIR__)) . '/' . trim($path, '/');
-
-        return $path;
-    }
 }
