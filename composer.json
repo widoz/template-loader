@@ -12,7 +12,7 @@
   "autoload": {
     "psr-4": {
       "TemplateLoader\\": "src/",
-      "TemplateLoaderTests\\": "tests/src/"
+      "TemplateLoader\\Tests\\": "tests/src/"
     }
   },
   "require-dev": {
