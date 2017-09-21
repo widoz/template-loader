@@ -162,6 +162,8 @@ final class Loader implements LoaderInterface
     public function setData(\stdClass $data)
     {
         $this->data = $data;
+
+        return $this;
     }
 
     /**
@@ -183,6 +185,8 @@ final class Loader implements LoaderInterface
             ['TemplateLoader\\Sanitizer', 'sanitizePathRegExp'],
             $templatesPath
         );
+
+        return $this;
     }
 
     /**

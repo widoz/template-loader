@@ -97,9 +97,10 @@ final class LoaderTest extends UnprefixTestCase
         $filePath = '/tests/assets/existsFile.php';
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
 
-        $this->loader->setTemplatePath($filePath);
-        $this->loader->setData(new \stdClass());
-        $this->loader->render();
+        $this->loader
+            ->setTemplatePath($filePath)
+            ->setData(new \stdClass())
+            ->render();
 
         $this->expectOutputString('This is an existing File php');
 
@@ -118,9 +119,10 @@ final class LoaderTest extends UnprefixTestCase
         $data                 = new \stdClass();
         $data->propertyToTest = 'Value of the property to test';
 
-        $this->loader->setTemplatePath($filePath);
-        $this->loader->setData($data);
-        $this->loader->render();
+        $this->loader
+            ->setTemplatePath($filePath)
+            ->setData($data)
+            ->render();
 
         $this->expectOutputString($data->propertyToTest);
     }
@@ -137,9 +139,9 @@ final class LoaderTest extends UnprefixTestCase
         // The file must not be found within the theme.
         Functions::when('locate_template')->justReturn('');
 
-        $this->loader->setTemplatePath($filePath);
-
-        $this->loader->render();
+        $this->loader
+            ->setTemplatePath($filePath)
+            ->render();
     }
 
     /**
@@ -161,6 +163,22 @@ final class LoaderTest extends UnprefixTestCase
         ob_get_clean();
 
         $this->assertSame($defaultFilePath . '/assets/existsFile.php', $located);
+    }
+
+    /**
+     * Test Set Template Path Return Loader InterfaceInstance
+     */
+    public function testSetTemplatePathReturnLoaderInterfaceInstance()
+    {
+        $this->assertInstanceOf('TemplateLoader\LoaderInterface', $this->loader->setTemplatePath(''));
+    }
+
+    /**
+     * Test Set Data Path Return LoaderInterface Instance
+     */
+    public function testSetDataPathReturnLoaderInterfaceInstance()
+    {
+        $this->assertInstanceOf('TemplateLoader\LoaderInterface', $this->loader->setData(new \stdClass()));
     }
 
     /**

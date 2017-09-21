@@ -42,7 +42,7 @@ interface LoaderInterface
      *
      * @param \stdClass $data The data for the view.
      *
-     * @return void
+     * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
     public function setData(\stdClass $data);
 
@@ -66,6 +66,8 @@ interface LoaderInterface
      * @since  1.0.0
      *
      * @param array|string $templatesPath The templates path.
+     *
+     * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
     public function setTemplatePath($templatesPath);
 
