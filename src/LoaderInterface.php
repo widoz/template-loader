@@ -79,20 +79,6 @@ interface LoaderInterface
     public function getTemplatePath();
 
     /**
-     * Locate template file
-     *
-     * Locate the file path for the view, hierarchy try to find the file within the child, parent and last within
-     * the plugin.
-     *
-     * @uses   locate_template() To locate the view file within the theme (child or parent).
-     *
-     * @since  2.1.0
-     *
-     * @return string The found file path. Empty string if not found.
-     */
-    public function locateFile();
-
-    /**
      * Render
      *
      * @since  1.0.0

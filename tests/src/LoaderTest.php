@@ -42,9 +42,9 @@ final class LoaderTest extends UnprefixTestCase
     private $loader;
 
     /**
-     * Test Set null as template path
+     * Test That Template Path Is Array Even If Pass Null
      */
-    public function testSetNullTemplatePath()
+    public function testThatTemplatePathIsArrayEvenIfPassNull()
     {
         // Null is the default value assigned to the templatePath property
         // when the instance is created.
@@ -52,25 +52,47 @@ final class LoaderTest extends UnprefixTestCase
 
         // Must be an empty array.
         $this->assertInternalType('array', $this->loader->getTemplatePath());
+    }
+
+    /**
+     * Test Set null as template path
+     */
+    public function testThatNullProduceAnEmptyTemplatePathContainer()
+    {
+        // Null is the default value assigned to the templatePath property
+        // when the instance is created.
+        $this->loader->setTemplatePath(null);
+
+        // Must be an empty array.
         $this->assertEmpty($this->loader->getTemplatePath());
     }
 
     /**
      * Test Set Template Path
      */
-    public function testSetTemplatePath()
+    public function testNotEmptyTemplatePathIfFileExists()
     {
         $templatePath = '/tests/assets/existsFile.php';
         $this->loader->setTemplatePath($templatePath);
 
         $this->assertNotEmpty($this->loader->getTemplatePath());
+    }
+
+    /**
+     * Test Correct File Path Within Template Path Container
+     */
+    public function testCorrectFilePathWithinTemplatePathContainer()
+    {
+        $templatePath = '/tests/assets/existsFile.php';
+        $this->loader->setTemplatePath($templatePath);
+
         $this->assertEquals(['tests/assets/existsFile.php'], $this->loader->getTemplatePath());
     }
 
     /**
-     * Test Render
+     * Test Output Render With Empty Data
      */
-    public function testRender()
+    public function testOutputRenderWithEmptyData()
     {
         $filePath = '/tests/assets/existsFile.php';
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
@@ -85,9 +107,9 @@ final class LoaderTest extends UnprefixTestCase
     }
 
     /**
-     * Test Data works as expected within closure.
+     * Test Ouput Render With Data Set
      */
-    public function testDataWorkAsExpectedWithinClosure()
+    public function testOutputRenderWithDataSet()
     {
         $filePath = '/tests/assets/fileTestDataProperty.php';
 
@@ -105,6 +127,8 @@ final class LoaderTest extends UnprefixTestCase
 
     /**
      * Test Locate file that use plugin. Files path not the same.
+     *
+     * @expectedException \Exception
      */
     public function testLocateFileUsePlugin()
     {
@@ -112,16 +136,31 @@ final class LoaderTest extends UnprefixTestCase
 
         // The file must not be found within the theme.
         Functions::when('locate_template')->justReturn('');
-        Functions::when('apply_filters')->justReturn('yes');
-
-        $mock = \Mockery::spy('overload:TemplateLoader\\Plugin');
-        $mock->shouldReceive('pluginDirPath')->andReturn('/plugin/dir/path' . $filePath);
 
         $this->loader->setTemplatePath($filePath);
 
-        $located = $this->loader->locateFile();
+        $this->loader->render();
+    }
 
-        $this->assertNotSame($filePath, $located);
+    /**
+     * Test Default Template Path
+     */
+    public function testDefaultTemplatePath()
+    {
+        $defaultFilePath = rtrim(self::$sourcePath, '/') . '/tests';
+
+        // This file shouldn't be found.
+        Functions::when('locate_template')->justReturn('');
+
+        $this->loader = new Loader('loader_slug', new DataStorage, '/assets/existsFile.php', $defaultFilePath);
+        // Data must be set or template will not included.
+        $this->loader->setData(new \stdClass());
+
+        ob_start();
+        $located = $this->loader->render();
+        ob_get_clean();
+
+        $this->assertSame($defaultFilePath . '/assets/existsFile.php', $located);
     }
 
     /**
