@@ -4,6 +4,7 @@
  *
  * @author    Guido Scialfa <dev@guidoscialfa.com>
  * @copyright Copyright (c) 2017, Guido Scialfa
+ * @package   TemplateLoader
  * @license   GNU General Public License, version 2
  *
  * Copyright (C) 2017 Guido Scialfa <dev@guidoscialfa.com>

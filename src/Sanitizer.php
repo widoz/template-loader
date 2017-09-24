@@ -3,6 +3,7 @@
  * Sanitizer
  *
  * @author    Guido Scialfa <dev@guidoscialfa.com>
+ * @package   TemplateLoader
  * @copyright Copyright (c) 2017, Guido Scialfa
  * @license   GNU General Public License, version 2
  *
