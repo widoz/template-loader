@@ -152,3 +152,6 @@ composer.lock
 
 #Translation
 default.mo
+
+#PHPUnit
+coverage/
