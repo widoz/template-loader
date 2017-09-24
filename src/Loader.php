@@ -93,6 +93,11 @@ final class Loader implements LoaderInterface
     {
         $path = '';
 
+        // If default path is empty there's nothing to try to retrieve.
+        if ('' === $this->defaultPath) {
+            return $path;
+        }
+
         if (is_array($tmplPath)) {
             foreach ($tmplPath as $path) {
                 // Get the file path from the current template path item.
