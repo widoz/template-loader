@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/widoz/template-loader.svg?branch=master)](https://travis-ci.org/widoz/template-loader)
+[![codecov](https://codecov.io/gh/widoz/template-loader/branch/master/graph/badge.svg)](https://codecov.io/gh/widoz/template-loader)
 
 # WordPress Template Loader
 
