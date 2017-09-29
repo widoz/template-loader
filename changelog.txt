@@ -1,3 +1,8 @@
+= 3.0.0 - 2017/29/09 =
+* Remove the Plugin concept in favor of a default custom defined path.
+* Introduce Method Cascading in Loader class.
+* Reorganized Tests.
+
 = 2.1.0 - 2017/09/03 =
 * Introduce TemplateLoaderInterface.
 * Introduce Closure to avoid $this usage within the template.

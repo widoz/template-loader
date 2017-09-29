@@ -74,7 +74,7 @@ final class Loader implements LoaderInterface
     /**
      * Default Path
      *
-     * @since ${SINCE}
+     * @since 3.0.0
      *
      * @var string The default path where search for the template file.
      */
