@@ -128,11 +128,11 @@ final class LoaderTest extends UnprefixTestCase
     }
 
     /**
-     * Test Locate file that use plugin. Files path not the same.
+     * Test non locate file path generate an exception
      *
      * @expectedException \Exception
      */
-    public function testLocateFileUsePlugin()
+    public function testLocateFileDoesnotExists()
     {
         $filePath = '/tests/assets/notExistsFile.php';
 
@@ -146,6 +146,9 @@ final class LoaderTest extends UnprefixTestCase
 
     /**
      * Test Default Template Path
+     *
+     * This test that template within the child and theme doesn't exists or not loaded and we have set a
+     * default path.
      */
     public function testDefaultTemplatePath()
     {
