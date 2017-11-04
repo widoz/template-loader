@@ -47,5 +47,5 @@
 
     <!-- Run against the PHPCompatibility ruleset -->
     <rule ref="PHPCompatibility"/>
-    <config name="testVersion" value="5.4"/>
+    <config name="testVersion" value="5.6"/>
 </ruleset>
