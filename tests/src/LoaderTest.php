@@ -23,9 +23,9 @@
 
 namespace TemplateLoader\Tests;
 
+use \Mockery as m;
 use Brain\Monkey\Functions;
 use TemplateLoader\DataStorage;
-use TemplateLoader\Plugin;
 use TemplateLoader\Loader;
 
 /**
@@ -95,11 +95,14 @@ final class LoaderTest extends UnprefixTestCase
     public function testOutputRenderWithEmptyData()
     {
         $filePath = '/tests/assets/existsFile.php';
+
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
+
+        $dataMock = m::mock('TemplateLoader\\DataInterface');
 
         $this->loader
             ->setTemplatePath($filePath)
-            ->setData(new \stdClass())
+            ->setData($dataMock)
             ->render();
 
         $this->expectOutputString('This is an existing File php');
@@ -116,15 +119,15 @@ final class LoaderTest extends UnprefixTestCase
 
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
 
-        $data                 = new \stdClass();
-        $data->propertyToTest = 'Value of the property to test';
+        $dataMock = m::mock('TemplateLoader\\DataInterface');
+        $dataMock->propertyToTest = 'Value of the property to test';
 
         $this->loader
             ->setTemplatePath($filePath)
-            ->setData($data)
+            ->setData($dataMock)
             ->render();
 
-        $this->expectOutputString($data->propertyToTest);
+        $this->expectOutputString($dataMock->propertyToTest);
     }
 
     /**
@@ -157,9 +160,11 @@ final class LoaderTest extends UnprefixTestCase
         // This file shouldn't be found.
         Functions::when('locate_template')->justReturn('');
 
+        $dataMock = m::mock('TemplateLoader\\DataInterface');
+
         $this->loader = new Loader('loader_slug', new DataStorage, '/assets/existsFile.php', $defaultFilePath);
         // Data must be set or template will not included.
-        $this->loader->setData(new \stdClass());
+        $this->loader->setData($dataMock);
 
         ob_start();
         $located = $this->loader->render();
@@ -181,7 +186,9 @@ final class LoaderTest extends UnprefixTestCase
      */
     public function testSetDataPathReturnLoaderInterfaceInstance()
     {
-        $this->assertInstanceOf('TemplateLoader\LoaderInterface', $this->loader->setData(new \stdClass()));
+        $dataMock = m::mock('TemplateLoader\\DataInterface');
+
+        $this->assertInstanceOf('TemplateLoader\LoaderInterface', $this->loader->setData($dataMock));
     }
 
     /**

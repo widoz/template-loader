@@ -164,7 +164,7 @@ final class Loader implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function setData(\stdClass $data)
+    public function setData(DataInterface $data)
     {
         $this->data = $data;
 
@@ -255,10 +255,10 @@ final class Loader implements LoaderInterface
          */
         $filePath = apply_filters('tmploader_template_file_path', $filePath, $data);
 
-        // Avoid usage of $this within the template.
-        $includePathClosure = \Closure::bind(function () use ($filePath, $data) {
+        // Bind $data so, we can referrer to `$this` within the template.
+        $includePathClosure = \Closure::bind(function () use ($filePath) {
             include $filePath;
-        }, null);
+        }, $data);
 
         // Include the template from the closure.
         $includePathClosure();

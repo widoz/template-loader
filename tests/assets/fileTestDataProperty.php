@@ -1,2 +1,2 @@
 <?php
-echo $data->propertyToTest;
+echo $this->propertyToTest;

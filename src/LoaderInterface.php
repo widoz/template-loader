@@ -41,11 +41,11 @@ interface LoaderInterface
      *
      * @since  1.0.0
      *
-     * @param \stdClass $data The data for the view.
+     * @param DataInterface $data The data for the view.
      *
      * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
-    public function setData(\stdClass $data);
+    public function setData(DataInterface $data);
 
     /**
      * Get Data
@@ -54,7 +54,7 @@ interface LoaderInterface
      *
      * @since 2.1.0
      *
-     * @return \stdClass The data object
+     * @return DataInterface The data object
      */
     public function getData();
 
