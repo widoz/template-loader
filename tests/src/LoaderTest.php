@@ -108,7 +108,7 @@ final class LoaderTest extends UnprefixTestCase
     }
 
     /**
-     * Test Ouput Render With Data Set
+     * Test Output Render With Data Set
      */
     public function testOutputRenderWithDataSet()
     {
