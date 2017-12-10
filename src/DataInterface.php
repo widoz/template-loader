@@ -29,7 +29,7 @@ namespace TemplateLoader;
 /**
  * Class DataInterface
  *
- * @since   ${SINCE}
+ * @since   3.0.0
  * @package TemplateLoader
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
