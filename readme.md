@@ -38,6 +38,9 @@ $loader->withData(new DataInterface())
        ->render();
 ```
 
+Since WordPress function `locate_template` allow to pass an array along a string, we can do the same by
+passing an array of template paths to the method `usingTemplate`.
+
 ## Data Type
 
 The data type used to inject values into the template is a class named `TemplateLoader\DataInterface`.
