@@ -3,9 +3,11 @@
         colors="true"
         beStrictAboutOutputDuringTests="true"
         beStrictAboutChangesToGlobalState="true"
-        processIsolation="true"
         backupGlobals="true"
-        backupStaticAttributes="true">
+        backupStaticAttributes="true"
+        processIsolation="true"
+        stopOnError="true"
+        stopOnFailure="true">
     <testsuites>
         <testsuite>
             <directory suffix="Test.php">./tests/src/</directory>
@@ -13,7 +15,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">./src/</directory>
             <file>./</file>
         </whitelist>
     </filter>
