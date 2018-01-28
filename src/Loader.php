@@ -81,67 +81,6 @@ final class Loader implements LoaderInterface
     private $defaultPath;
 
     /**
-     * Retrieve the file path
-     *
-     * @since  1.0.0
-     *
-     * @param array|string $tmplPath The paths of the view files.
-     *
-     * @return string The first path found. Empty string if not found.
-     */
-    private function defaultPath($tmplPath)
-    {
-        $path = '';
-
-        // If default path is empty there's nothing to try to retrieve.
-        if ('' === $this->defaultPath) {
-            return $path;
-        }
-
-        if (is_array($tmplPath)) {
-            foreach ($tmplPath as $path) {
-                // Get the file path from the current template path item.
-                $path = $this->defaultPath($path);
-
-                // We have the file?
-                if (file_exists($path)) {
-                    break;
-                }
-            }
-        } elseif (is_string($tmplPath)) {
-            $path = realpath(untrailingslashit($this->defaultPath) . '/' . trim($tmplPath, '/'));
-        }
-
-        return $path;
-    }
-
-    /**
-     * Locate template file
-     *
-     * Locate the file path for the view, hierarchy try to find the file within the child, parent and last within
-     * the plugin.
-     *
-     * @uses   locate_template() To locate the view file within the theme (child or parent).
-     *
-     * @since  2.1.0
-     *
-     * @return string The found file path. Empty string if not found.
-     */
-    private function locateFile()
-    {
-        // Try to retrieve the theme file path from child or parent for first.
-        // Fallback to Plugin templates path.
-        $filePath = locate_template($this->templatesPath, false, false);
-
-        // Looking for the file within the plugin if allowed.
-        if (! $filePath) {
-            $filePath = $this->defaultPath($this->templatesPath);
-        }
-
-        return $filePath;
-    }
-
-    /**
      * Construct
      *
      * @since  1.0.0
@@ -265,6 +204,67 @@ final class Loader implements LoaderInterface
 
         // After the template has been rendered, store it for a next use.
         $this->dataStorage[$this->slug] = $filePath;
+
+        return $filePath;
+    }
+
+    /**
+     * Retrieve the file path
+     *
+     * @since  1.0.0
+     *
+     * @param array|string $tmplPath The paths of the view files.
+     *
+     * @return string The first path found. Empty string if not found.
+     */
+    private function defaultPath($tmplPath)
+    {
+        $path = '';
+
+        // If default path is empty there's nothing to try to retrieve.
+        if ('' === $this->defaultPath) {
+            return $path;
+        }
+
+        if (is_array($tmplPath)) {
+            foreach ($tmplPath as $path) {
+                // Get the file path from the current template path item.
+                $path = $this->defaultPath($path);
+
+                // We have the file?
+                if (file_exists($path)) {
+                    break;
+                }
+            }
+        } elseif (is_string($tmplPath)) {
+            $path = realpath(untrailingslashit($this->defaultPath) . '/' . trim($tmplPath, '/'));
+        }
+
+        return $path;
+    }
+
+    /**
+     * Locate template file
+     *
+     * Locate the file path for the view, hierarchy try to find the file within the child, parent and last within
+     * the plugin.
+     *
+     * @uses   locate_template() To locate the view file within the theme (child or parent).
+     *
+     * @since  2.1.0
+     *
+     * @return string The found file path. Empty string if not found.
+     */
+    private function locateFile()
+    {
+        // Try to retrieve the theme file path from child or parent for first.
+        // Fallback to Plugin templates path.
+        $filePath = locate_template($this->templatesPath, false, false);
+
+        // Looking for the file within the plugin if allowed.
+        if (! $filePath) {
+            $filePath = $this->defaultPath($this->templatesPath);
+        }
 
         return $filePath;
     }
