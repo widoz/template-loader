@@ -16,7 +16,7 @@ Php >= 5.6.x
 ```php
 $loader = new TemplateLoader\Loader(
     'template_slug',
-    new TemplateLoader\DataStorate(),
+    new TemplateLoader\DataStorage(),
     '/views/template.php'
 );
 
