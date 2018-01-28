@@ -126,7 +126,7 @@ final class Loader implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function fallbackToTemplate($path)
+    public function butFallbackToTemplate($path)
     {
         $this->defaultPath = $path;
 

@@ -140,7 +140,7 @@ class LoaderTest extends UnprefixTestCase
         // Data must be set or template will not included.
         $loader->withData($dataMock)
                ->usingTemplate('notExistsFile.php')
-               ->fallbackToTemplate(rtrim(self::$sourcePath, '/') . '/assets/existsEmptyFile.php');
+               ->butFallbackToTemplate(rtrim(self::$sourcePath, '/') . '/assets/existsEmptyFile.php');
 
         $located = $loader->render();
 

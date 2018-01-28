@@ -73,7 +73,7 @@ interface LoaderInterface
      *
      * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
-    public function fallbackToTemplate($path);
+    public function butFallbackToTemplate($path);
 
     /**
      * Render
