@@ -77,7 +77,7 @@ This in case you don't want or need to write conditional statements to know whic
 
 ```php
 add_filter('tmploader_template_engine_data_my_template', function(TemplateLoader\DataInterface $data) {
-    return new TemplateLoader\DataInterface();
+    return new DataTemplate(); // An new instance of a class implementing TemplateLoader\DataInterface.
 });
 ```
 
