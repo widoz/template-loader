@@ -10,3 +10,15 @@ Indeed this is a loader to build a basic data injection for views (templates).
 
 ## Requirements
 Php >= 5.6.x
+
+# Examples
+
+```php
+$loader = new TemplateLoader\Loader(
+    'template_slug',
+    new TemplateLoader\DataStorate(),
+    '/views/template.php'
+);
+
+$loader->render();
+```
