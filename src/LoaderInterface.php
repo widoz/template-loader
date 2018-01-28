@@ -39,24 +39,14 @@ interface LoaderInterface
      *
      * Set the data for the view.
      *
-     * @since  1.0.0
+     * @since 1.0.0
+     * @since 4.0.0 Has been renamed to `withData`
      *
      * @param DataInterface $data The data for the view.
      *
      * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
-    public function setData(DataInterface $data);
-
-    /**
-     * Get Data
-     *
-     * Get the data for the view
-     *
-     * @since 2.1.0
-     *
-     * @return DataInterface The data object
-     */
-    public function getData();
+    public function withData(DataInterface $data);
 
     /**
      * Set Templates Path
@@ -64,22 +54,26 @@ interface LoaderInterface
      * Set the templates path. Where to search for a valid file for the template.
      * This also sanitize the templates path.
      *
-     * @since  1.0.0
+     * @since 1.0.0
+     * @since 4.0.0 Has been renamed to `usingTemplate`
      *
      * @param array|string $templatesPath The templates path.
      *
      * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
-    public function setTemplatePath($templatesPath);
+    public function usingTemplate($templatesPath);
 
     /**
-     * Get Templates Path
+     * Fallback to Template
      *
-     * @since  1.0.0
+     * @since 4.0.0
      *
-     * @return array The templates path list
+     * @param string $path The path to fallback in case the template path set isn't found.
+     *                     Used generally into a plugin.
+     *
+     * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
-    public function getTemplatePath();
+    public function fallbackToTemplate($path);
 
     /**
      * Render
