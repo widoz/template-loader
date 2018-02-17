@@ -35,5 +35,14 @@ namespace TemplateLoader;
  */
 interface DataInterface
 {
-
+    /**
+     * Template Data
+     *
+     * The stdClass object to use as container for the view data.
+     *
+     * @since 4.0.0
+     *
+     * @return DataInterface A instance that contain the view data properties
+     */
+    public function data();
 }
