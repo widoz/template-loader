@@ -1,5 +1,5 @@
 <phpunit
-        bootstrap="./tests/bootstrap.php.dist"
+        bootstrap="./tests/src/php/bootstrap.php.dist"
         colors="true"
         beStrictAboutOutputDuringTests="true"
         beStrictAboutChangesToGlobalState="true"
