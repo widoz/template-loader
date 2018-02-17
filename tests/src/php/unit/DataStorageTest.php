@@ -23,9 +23,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-namespace TemplateLoader\Tests;
+namespace TemplateLoader\Tests\Unit;
 
 use TemplateLoader\DataStorage;
+use TemplateLoader\Tests\UnprefixTestCase;
 
 class DataStorageTest extends UnprefixTestCase
 {

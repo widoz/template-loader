@@ -40,9 +40,10 @@ interface TemplateInterface
      *
      * The stdClass object to use as container for the view data.
      *
-     * @since  2.1.0
+     * @since 2.1.0
+     * @since 4.0.0 The returned value is a \TemplateLoader\DataInterface.
      *
-     * @return \stdClass A instance that contain the view data properties
+     * @return DataInterface A instance that contain the view data properties
      */
     public function data();
 
@@ -50,10 +51,11 @@ interface TemplateInterface
      * Template
      *
      * @since  2.1.0
+     * @since  4.0.0 The parameter data is a type of TemplateLoader\DataInterface
      *
-     * @param \stdClass $data The data for the template view.
+     * @param \TemplateLoader\DataInterface $data The data for the template view.
      *
      * @return void
      */
-    public function tmpl(\stdClass $data);
+    public function tmpl(DataInterface $data);
 }

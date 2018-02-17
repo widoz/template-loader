@@ -81,90 +81,27 @@ final class Loader implements LoaderInterface
     private $defaultPath;
 
     /**
-     * Retrieve the file path
-     *
-     * @since  1.0.0
-     *
-     * @param array|string $tmplPath The paths of the view files.
-     *
-     * @return string The first path found. Empty string if not found.
-     */
-    private function defaultPath($tmplPath)
-    {
-        $path = '';
-
-        // If default path is empty there's nothing to try to retrieve.
-        if ('' === $this->defaultPath) {
-            return $path;
-        }
-
-        if (is_array($tmplPath)) {
-            foreach ($tmplPath as $path) {
-                // Get the file path from the current template path item.
-                $path = $this->defaultPath($path);
-
-                // We have the file?
-                if (file_exists($path)) {
-                    break;
-                }
-            }
-        } elseif (is_string($tmplPath)) {
-            $path = realpath(untrailingslashit($this->defaultPath) . '/' . trim($tmplPath, '/'));
-        }
-
-        return $path;
-    }
-
-    /**
-     * Locate template file
-     *
-     * Locate the file path for the view, hierarchy try to find the file within the child, parent and last within
-     * the plugin.
-     *
-     * @uses   locate_template() To locate the view file within the theme (child or parent).
-     *
-     * @since  2.1.0
-     *
-     * @return string The found file path. Empty string if not found.
-     */
-    private function locateFile()
-    {
-        // Try to retrieve the theme file path from child or parent for first.
-        // Fallback to Plugin templates path.
-        $filePath = locate_template($this->templatesPath, false, false);
-
-        // Looking for the file within the plugin if allowed.
-        if (! $filePath) {
-            $filePath = $this->defaultPath($this->templatesPath);
-        }
-
-        return $filePath;
-    }
-
-    /**
      * Construct
      *
-     * @since  1.0.0
+     * @since 1.0.0
+     * @since 4.0.0 Removed template and default path parameters.
      *
-     * @param string       $slug         The slug of the current template instance.
-     * @param DataStorage  $storage      A data storage instance where store found and used templates path.
-     * @param string|array $templatePath The template paths where looking for the template file. Optional.
-     * @param string       $defaultPath  The default path where search for views if not found in themes.
+     * @param string      $slug    The slug of the current template instance.
+     * @param DataStorage $storage A data storage instance where store found and used templates
+     *                             path.
      */
-    public function __construct($slug, DataStorage $storage, $templatePath = null, $defaultPath = '')
+    public function __construct($slug, DataStorage $storage)
     {
         $this->slug        = Sanitizer::sanitizeSlugRegExp($slug);
-        $this->data        = null;
         $this->dataStorage = $storage;
-        $this->defaultPath = $defaultPath;
-
-        $this->setTemplatePath($templatePath);
+        $this->data        = null;
+        $this->defaultPath = null;
     }
 
     /**
      * @inheritdoc
      */
-    public function setData(DataInterface $data)
+    public function withData(DataInterface $data)
     {
         $this->data = $data;
 
@@ -174,21 +111,13 @@ final class Loader implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function getData()
+    public function usingTemplate($template)
     {
-        return $this->data;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setTemplatePath($templatesPath)
-    {
-        $templatesPath = (array)$templatesPath;
+        $template = (array)$template;
         // Sanitize and retrieve the found template path.
         $this->templatesPath = array_map(
             ['TemplateLoader\\Sanitizer', 'sanitizePathRegExp'],
-            $templatesPath
+            $template
         );
 
         return $this;
@@ -197,9 +126,11 @@ final class Loader implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function getTemplatePath()
+    public function butFallbackToTemplate($path)
     {
-        return $this->templatesPath;
+        $this->defaultPath = $path;
+
+        return $this;
     }
 
     /**
@@ -265,6 +196,32 @@ final class Loader implements LoaderInterface
 
         // After the template has been rendered, store it for a next use.
         $this->dataStorage[$this->slug] = $filePath;
+
+        return $filePath;
+    }
+
+    /**
+     * Locate template file
+     *
+     * Locate the file path for the view, hierarchy try to find the file within the child, parent
+     * and last within the plugin.
+     *
+     * @uses   locate_template() To locate the view file within the theme (child or parent).
+     *
+     * @since  2.1.0
+     *
+     * @return string The found file path. Empty string if not found.
+     */
+    private function locateFile()
+    {
+        // Try to retrieve the theme file path from child or parent for first.
+        // Fallback to Plugin templates path.
+        $filePath = locate_template($this->templatesPath, false, false);
+
+        // Looking for the file within the plugin if allowed.
+        if (! $filePath) {
+            $filePath = $this->defaultPath;
+        }
 
         return $filePath;
     }

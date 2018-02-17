@@ -23,12 +23,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-namespace TemplateLoader\Tests;
+namespace TemplateLoader\Tests\Unit;
 
 use TemplateLoader\Sanitizer;
 use PHPUnit\Framework\TestCase;
+use TemplateLoader\Tests\UnprefixTestCase;
 
-class SanitizerTest extends TestCase
+class SanitizerTest extends UnprefixTestCase
 {
     /**
      * Prevent Path Traversal
