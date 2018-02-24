@@ -2,10 +2,10 @@
 /**
  * Template Loader
  *
- * @since     1.0.0
  * @package   TemplateLoader
- * @copyright Copyright (c) 2016, Guido Scialfa
+ * @copyright 2016 Guido Scialfa
  * @license   http://opensource.org/licenses/gpl-2.0.php GPL v2
+ * @since     1.0.0
  *
  * Copyright (C) 2017 Guido Scialfa <dev@guidoscialfa.com>
  *
@@ -192,7 +192,8 @@ final class Loader implements LoaderInterface
         $includePathClosure = \Closure::bind(
             function () use ($filePath) {
                 include $filePath;
-            }, $data
+            },
+            $data
         );
 
         // Include the template from the closure.
@@ -210,7 +211,7 @@ final class Loader implements LoaderInterface
      * Locate the file path for the view, hierarchy try to find the file within the child, parent
      * and last within the plugin.
      *
-     * @uses locate_template() To locate the view file within the theme (child or parent).
+     * @uses  locate_template() To locate the view file within the theme (child or parent).
      *
      * @since 2.1.0
      *
