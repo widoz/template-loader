@@ -6,6 +6,7 @@ install:
     composer install
 
 script:
+    - phpcs --standard=Security src/
     - vendor/bin/phpunit --coverage-clover=coverage/report/coverage.xml
 
 after_success:
