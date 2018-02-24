@@ -38,8 +38,8 @@ interface TemplateInterface
     /**
      * Template
      *
-     * @since  2.1.0
-     * @since  4.0.0 The parameter data is a type of TemplateLoader\DataInterface
+     * @since 2.1.0
+     * @since 4.0.0 The parameter data is a type of TemplateLoader\DataInterface
      *
      * @param \TemplateLoader\DataInterface $data The data for the template view.
      *

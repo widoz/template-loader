@@ -29,8 +29,8 @@ namespace TemplateLoader;
 /**
  * Class LoaderInterface
  *
- * @since   2.1.0
- * @author  Guido Scialfa <dev@guidoscialfa.com>
+ * @since  2.1.0
+ * @author Guido Scialfa <dev@guidoscialfa.com>
  */
 interface LoaderInterface
 {
@@ -78,7 +78,7 @@ interface LoaderInterface
     /**
      * Render
      *
-     * @since  1.0.0
+     * @since 1.0.0
      *
      * @throws \Exception In case the template path is incorrect or cannot be located.
      *

@@ -2,10 +2,10 @@
 /**
  * Template Loader
  *
- * @since      1.0.0
- * @package    TemplateLoader
- * @copyright  Copyright (c) 2016, Guido Scialfa
- * @license    http://opensource.org/licenses/gpl-2.0.php GPL v2
+ * @since     1.0.0
+ * @package   TemplateLoader
+ * @copyright Copyright (c) 2016, Guido Scialfa
+ * @license   http://opensource.org/licenses/gpl-2.0.php GPL v2
  *
  * Copyright (C) 2017 Guido Scialfa <dev@guidoscialfa.com>
  *
@@ -38,7 +38,7 @@ final class Loader implements LoaderInterface
     /**
      * Name
      *
-     * @since  1.0.0
+     * @since 1.0.0
      *
      * @var string The slug of the current template instance.
      */
@@ -47,7 +47,7 @@ final class Loader implements LoaderInterface
     /**
      * Templates Path
      *
-     * @since  1.0.0
+     * @since 1.0.0
      *
      * @var array The list of the view files
      */
@@ -56,7 +56,7 @@ final class Loader implements LoaderInterface
     /**
      * Data
      *
-     * @since  1.0.0
+     * @since 1.0.0
      *
      * @var \stdClass The data object
      */
@@ -65,7 +65,7 @@ final class Loader implements LoaderInterface
     /**
      * Data Storage
      *
-     * @since  2.0.0
+     * @since 2.0.0
      *
      * @var DataStorage The instance of the storage where store the rendered templates
      */
@@ -146,10 +146,12 @@ final class Loader implements LoaderInterface
 
         // Empty string or bool depend by the conditional above.
         if (! file_exists($filePath)) {
-            throw new \Exception(sprintf(
-                'Template Loader: No way to locate the template %s.',
-                $filePath
-            ));
+            throw new \Exception(
+                sprintf(
+                    'Template Loader: No way to locate the template %s.',
+                    $filePath
+                )
+            );
         }
 
         /**
@@ -187,9 +189,11 @@ final class Loader implements LoaderInterface
         $filePath = apply_filters('tmploader_template_file_path', $filePath, $data);
 
         // Bind $data so, we can referrer to `$this` within the template.
-        $includePathClosure = \Closure::bind(function () use ($filePath) {
-            include $filePath;
-        }, $data);
+        $includePathClosure = \Closure::bind(
+            function () use ($filePath) {
+                include $filePath;
+            }, $data
+        );
 
         // Include the template from the closure.
         $includePathClosure();
@@ -206,9 +210,9 @@ final class Loader implements LoaderInterface
      * Locate the file path for the view, hierarchy try to find the file within the child, parent
      * and last within the plugin.
      *
-     * @uses   locate_template() To locate the view file within the theme (child or parent).
+     * @uses locate_template() To locate the view file within the theme (child or parent).
      *
-     * @since  2.1.0
+     * @since 2.1.0
      *
      * @return string The found file path. Empty string if not found.
      */
