@@ -36,24 +36,6 @@ namespace TemplateLoader;
 class Sanitizer
 {
     /**
-     * Slug Sanitizer Pattern
-     *
-     * @since 2.0.0
-     *
-     * @var string The pattern for array keys
-     */
-    const SLUG_SANITIZE_PATTERN = '/[^a-z0-9\-\_]*/';
-
-    /**
-     * Path Sanitizer Pattern
-     *
-     * @since 2.0.0
-     *
-     * @var string The pattern to sanitize the paths
-     */
-    const PATH_SANITIZE_PATTERN = '/[^a-zA-Z0-9\/\-\_\.]+/';
-
-    /**
      * Sanitize path
      *
      * @since 2.0.0
@@ -84,7 +66,7 @@ class Sanitizer
      */
     public static function sanitizeSlugRegExp($slug)
     {
-        return preg_replace(static::SLUG_SANITIZE_PATTERN, '', $slug);
+        return preg_replace('/[^a-z0-9\-\_]*/', '', $slug);
     }
 
     /**
@@ -101,7 +83,7 @@ class Sanitizer
         // Sanitize template path and remove the path separator.
         // locate_template build the path in this way {STYLESHEET|TEMPLATE}PATH . '/' . $template_name.
         return self::sanitizePath(
-            trim(preg_replace(static::PATH_SANITIZE_PATTERN, '', $path), '/')
+            trim(preg_replace('/[^a-zA-Z0-9\/\-\_\.]+/', '', $path), '/')
         );
     }
 }

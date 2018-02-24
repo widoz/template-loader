@@ -146,6 +146,7 @@ final class Loader implements LoaderInterface
 
         // Empty string or bool depend by the conditional above.
         // @todo Instead of check if the file exists, just simply see the #10.
+        // phpcs:ignore PHPCS_SecurityAudit.BadFunctions.FilesystemFunctions.WarnFilesystem
         if (! file_exists($filePath)) {
             throw new \Exception(
                 sprintf(
@@ -192,7 +193,7 @@ final class Loader implements LoaderInterface
         // Bind $data so, we can referrer to `$this` within the template.
         $includePathClosure = \Closure::bind(
             function () use ($filePath) {
-                include $filePath;
+                include $filePath; // phpcs:ignore
             },
             $data
         );
