@@ -115,7 +115,7 @@ final class Loader implements LoaderInterface
     {
         $template = (array)$template;
         // Sanitize and retrieve the found template path.
-        $this->templatesPath = array_map(
+        $this->templatesPath = array_map( // phpcs:ignore
             ['TemplateLoader\\Sanitizer', 'sanitizePathRegExp'],
             $template
         );
@@ -145,6 +145,7 @@ final class Loader implements LoaderInterface
             $this->locateFile();
 
         // Empty string or bool depend by the conditional above.
+        // @todo Instead of check if the file exists, just simply see the #10.
         if (! file_exists($filePath)) {
             throw new \Exception(
                 sprintf(
