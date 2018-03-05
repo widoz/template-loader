@@ -48,8 +48,11 @@ class DataStorage implements \ArrayAccess, \Countable
      * DataStorage constructor
      *
      * @since 2.0.0
+     * @since 4.0.1 Added parameter $data to fill the data at once.
+     *
+     * @param array $data To fill the data at once.
      */
-    public function __construct()
+    public function __construct($data = [])
     {
         $this->data = [];
     }
