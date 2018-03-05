@@ -54,7 +54,7 @@ class DataStorage implements \ArrayAccess, \Countable
      */
     public function __construct($data = [])
     {
-        $this->data = [];
+        $this->data = $data;
     }
 
     /**
