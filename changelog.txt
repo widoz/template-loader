@@ -1,4 +1,4 @@
-= 4.0.0 - 2018/03/15 =
+= 4.0.1 - 2018/03/15 =
 * Fix: DataStorage allow to set parameter $data to fill the data at once.
 * Fix: Sanitize the default path for the fallback view path. Guido Scialfa 3/5/18, 10:16 PM
 * Phpcs Security fixes.
