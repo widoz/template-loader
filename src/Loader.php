@@ -128,7 +128,7 @@ final class Loader implements LoaderInterface
      */
     public function butFallbackToTemplate($path)
     {
-        $this->defaultPath = $path;
+        $this->defaultPath = Sanitizer::sanitizePath($path);
 
         return $this;
     }
