@@ -46,13 +46,13 @@ class LoaderTest extends UnprefixTestCase
 
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
 
-        $dataInterfaceMock = \Mockery::mock('TemplateLoader\\DataInterface');
+        $modelInterfaceMock = \Mockery::mock('TemplateLoader\\ModelInterface');
 
         $loader = new Loader('loader_slug', new DataStorage());
 
         // Must be an empty array.
         $this->assertNotEmpty(
-            $loader->withData($dataInterfaceMock)
+            $loader->withData($modelInterfaceMock)
                    ->usingTemplate($filePath)
                    ->render()
         );
@@ -67,12 +67,12 @@ class LoaderTest extends UnprefixTestCase
 
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
 
-        $dataInterfaceMock = \Mockery::mock('TemplateLoader\\DataInterface');
+        $modelInterfaceMock = \Mockery::mock('TemplateLoader\\ModelInterface');
 
         $loader = new Loader('loader_slug', new DataStorage());
 
         $loader
-            ->withData($dataInterfaceMock)
+            ->withData($modelInterfaceMock)
             ->usingTemplate($filePath)
             ->render();
 
@@ -88,7 +88,7 @@ class LoaderTest extends UnprefixTestCase
 
         Functions::when('locate_template')->justReturn(rtrim(self::$sourcePath, '/') . $filePath);
 
-        $dataMock                 = m::mock('TemplateLoader\\DataInterface');
+        $dataMock                 = m::mock('TemplateLoader\\ModelInterface');
         $dataMock->propertyToTest = 'Value of the property to test';
 
         $loader = new Loader('template_slug', new DataStorage());
@@ -113,7 +113,7 @@ class LoaderTest extends UnprefixTestCase
         // The file must not be found within the theme.
         Functions::when('locate_template')->justReturn('');
 
-        $dataMock = m::mock('TemplateLoader\\DataInterface');
+        $dataMock = m::mock('TemplateLoader\\ModelInterface');
 
         $loader = new Loader('template_slug', new DataStorage());
 
@@ -134,7 +134,7 @@ class LoaderTest extends UnprefixTestCase
         // This file shouldn't be found.
         Functions::when('locate_template')->justReturn('');
 
-        $dataMock = m::mock('TemplateLoader\\DataInterface');
+        $dataMock = m::mock('TemplateLoader\\ModelInterface');
 
         $loader = new Loader('loader_slug', new DataStorage);
         // Data must be set or template will not included.

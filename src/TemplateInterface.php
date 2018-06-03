@@ -39,11 +39,11 @@ interface TemplateInterface
      * Template
      *
      * @since 2.1.0
-     * @since 4.0.0 The parameter data is a type of TemplateLoader\DataInterface
+     * @since 4.0.0 The parameter data is a type of TemplateLoader\ModelInterface
      *
-     * @param \TemplateLoader\DataInterface $data The data for the template view.
+     * @param \TemplateLoader\ModelInterface $data The data for the template view.
      *
      * @return void
      */
-    public function tmpl(DataInterface $data);
+    public function tmpl(ModelInterface $data);
 }

@@ -19,7 +19,7 @@ the calls to ask the instance to do the things.
 ```php
 $loader = new TemplateLoader\Loader('template_slug', new TemplateLoader\DataStorage());
 
-$loader->withData(new DataInterface())
+$loader->withData(new ModelInterface())
        ->usingTemplate('/relative/file/path.php')
        ->render()
 ```
@@ -32,7 +32,7 @@ As the name *fallback* says the file will be loaded only in case nothing is foun
 ```php
 $loader = new TemplateLoader\Loader('template_slug', new TemplateLoader\DataStorage());
 
-$loader->withData(new DataInterface())
+$loader->withData(new ModelInterface())
        ->usingTemplate('/relative/file/path.php')
        ->butFallbackToTemplate('/plugin/relative/file/path.php')
        ->render();
@@ -43,8 +43,8 @@ passing an array of template paths to the method `usingTemplate`.
 
 ## Data Type
 
-The data type used to inject values into the template is a class named `TemplateLoader\DataInterface`.
-`DataInterface` doesn't declare any method. It's just a way to ensure the correct type of data is passed into the template loader.
+The data type used to inject values into the template is a class named `TemplateLoader\ModelInterface`.
+`ModelInterface` doesn't declare any method. It's just a way to ensure the correct type of data is passed into the template loader.
 
 This way we can extends the interface to create our own contracts based on the specific view.
 
@@ -56,7 +56,7 @@ to be modified before the template file is loaded.
 There are two filter: `tmploader_template_engine_data` that is generic and pass the `$data` value and the `slug` property.
 
 ```php
-add_filter('tmploader_template_engine_data', function(TemplateLoader\DataInterface $data, string $slug) {
+add_filter('tmploader_template_engine_data', function(TemplateLoader\ModelInterface $data, string $slug) {
 
     switch($slug) {
         case 'my_slug':
@@ -76,8 +76,8 @@ The second one is similar but the filter name include the slug template: `"tmplo
 This in case you don't want or need to write conditional statements to know which is the current processing template.
 
 ```php
-add_filter('tmploader_template_engine_data_my_template', function(TemplateLoader\DataInterface $data) {
-    return new DataTemplate(); // An new instance of a class implementing TemplateLoader\DataInterface.
+add_filter('tmploader_template_engine_data_my_template', function(TemplateLoader\ModelInterface $data) {
+    return new DataTemplate(); // An new instance of a class implementing TemplateLoader\ModelInterface.
 });
 ```
 
@@ -97,14 +97,14 @@ load the same template multiple times with different data values.
 ```php
 $loader = new TemplateLoader\Loader('template_slug', new TemplateLoader\DataStorage());
 
-$loader->withData(new DataInterface())
+$loader->withData(new ModelInterface())
        ->usingTemplate('/relative/file/path.php')
        ->butFallbackToTemplate('/plugin/relative/file/path.php')
        ->render();
 
 // Some code ... and then ...
 
-$loader->withData(new DataInterface())
+$loader->withData(new ModelInterface())
        ->render();
 ```
 

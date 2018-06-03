@@ -1,6 +1,6 @@
 <?php
 /**
- * DataInterface
+ * ModelInterface
  *
  * @author    Guido Scialfa <dev@guidoscialfa.com>
  * @package   template-loader
@@ -27,13 +27,13 @@
 namespace TemplateLoader;
 
 /**
- * Class DataInterface
+ * Class ModelInterface
  *
  * @since   3.0.0
  * @package TemplateLoader
  * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
-interface DataInterface
+interface ModelInterface
 {
     /**
      * Template Data
@@ -42,7 +42,7 @@ interface DataInterface
      *
      * @since 4.0.0
      *
-     * @return DataInterface A instance that contain the view data properties
+     * @return ModelInterface A instance that contain the view data properties
      */
     public function data();
 }

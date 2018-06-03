@@ -42,11 +42,11 @@ interface LoaderInterface
      * @since 1.0.0
      * @since 4.0.0 Has been renamed to `withData`
      *
-     * @param DataInterface $data The data for the view.
+     * @param ModelInterface $data The data for the view.
      *
      * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
-    public function withData(DataInterface $data);
+    public function withData(ModelInterface $data);
 
     /**
      * Set Templates Path

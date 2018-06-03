@@ -101,7 +101,7 @@ final class Loader implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function withData(DataInterface $data)
+    public function withData(ModelInterface $data)
     {
         $this->data = $data;
 
