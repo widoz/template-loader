@@ -1,3 +1,13 @@
+= 4.0.1 - 2018/03/15 =
+* Fix: DataStorage allow to set parameter $data to fill the data at once.
+* Fix: Sanitize the default path for the fallback view path. Guido Scialfa 3/5/18, 10:16 PM
+* Phpcs Security fixes.
+* Introduce security phpcs in travis.
+* Fix: Incorrect path for autoloader for tests classes.
+
+= 4.0.0 - 2018/02/17 =
+* Rewritten from scratch
+
 = 3.0.0 - 2017/29/09 =
 * Remove the Plugin concept in favor of a default custom defined path.
 * Introduce Method Cascading in Loader class.

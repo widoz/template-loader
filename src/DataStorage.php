@@ -38,7 +38,7 @@ class DataStorage implements \ArrayAccess, \Countable
     /**
      * The Container
      *
-     * @since  2.0.0
+     * @since 2.0.0
      *
      * @var array The container
      */
@@ -48,16 +48,19 @@ class DataStorage implements \ArrayAccess, \Countable
      * DataStorage constructor
      *
      * @since 2.0.0
+     * @since 4.0.1 Added parameter $data to fill the data at once.
+     *
+     * @param array $data To fill the data at once.
      */
-    public function __construct()
+    public function __construct($data = [])
     {
-        $this->data = [];
+        $this->data = $data;
     }
 
     /**
      * Offset Exists
      *
-     * @since  2.0.0
+     * @since 2.0.0
      *
      * @param mixed $offset
      *
@@ -71,7 +74,7 @@ class DataStorage implements \ArrayAccess, \Countable
     /**
      * Offset Get
      *
-     * @since  2.0.0
+     * @since 2.0.0
      *
      * @param mixed $offset The offset form which retrieve the data.
      *
@@ -80,10 +83,12 @@ class DataStorage implements \ArrayAccess, \Countable
     public function offsetGet($offset)
     {
         if (! $this->offsetExists($offset)) {
-            throw new \OutOfBoundsException(sprintf(
-                'Key %s does not exists',
-                $offset
-            ));
+            throw new \OutOfBoundsException(
+                sprintf(
+                    'Key %s does not exists',
+                    $offset
+                )
+            );
         }
 
         return $this->data[$offset];
@@ -92,7 +97,7 @@ class DataStorage implements \ArrayAccess, \Countable
     /**
      * Offset Set
      *
-     * @since  2.0.0
+     * @since 2.0.0
      *
      * @param mixed $offset The offset where store the data.
      * @param mixed $value  The value to set.
@@ -107,7 +112,7 @@ class DataStorage implements \ArrayAccess, \Countable
     /**
      * Unset Offset
      *
-     * @since  2.0.0
+     * @since 2.0.0
      *
      * @param mixed $offset The offset to remove.
      *
@@ -121,7 +126,7 @@ class DataStorage implements \ArrayAccess, \Countable
     /**
      * Count Data
      *
-     * @since  2.0.0
+     * @since 2.0.0
      *
      * @return int The number of data set
      */

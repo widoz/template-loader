@@ -6,6 +6,8 @@ install:
     composer install
 
 script:
+    - ./vendor/bin/phpcs --config-set installed_paths vendor/pheromone/phpcs-security-audit/Security/
+    - ./vendor/bin/phpcs --standard=Security src/
     - vendor/bin/phpunit --coverage-clover=coverage/report/coverage.xml
 
 after_success:

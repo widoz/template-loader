@@ -29,8 +29,8 @@ namespace TemplateLoader;
 /**
  * Class LoaderInterface
  *
- * @since   2.1.0
- * @author  Guido Scialfa <dev@guidoscialfa.com>
+ * @since  2.1.0
+ * @author Guido Scialfa <dev@guidoscialfa.com>
  */
 interface LoaderInterface
 {
@@ -42,11 +42,11 @@ interface LoaderInterface
      * @since 1.0.0
      * @since 4.0.0 Has been renamed to `withData`
      *
-     * @param DataInterface $data The data for the view.
+     * @param ModelInterface $data The data for the view.
      *
      * @return LoaderInterface An instance of the LoaderInterface for chaining
      */
-    public function withData(DataInterface $data);
+    public function withData(ModelInterface $data);
 
     /**
      * Set Templates Path
@@ -78,7 +78,7 @@ interface LoaderInterface
     /**
      * Render
      *
-     * @since  1.0.0
+     * @since 1.0.0
      *
      * @throws \Exception In case the template path is incorrect or cannot be located.
      *
